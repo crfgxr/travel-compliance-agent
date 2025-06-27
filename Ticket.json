@@ -1,0 +1,219 @@
+{
+    "data": {
+        "hotelReservations": [],
+        "flights": [
+            {
+                "status": "Carileme Yapıldı",
+                "bookingId": "TIC-457855",
+                "confirmationNumber": "SRWK64",
+                "amount": 4941.00,
+                "reservationType": "domestic",
+                "orderDateTime": "2025-06-23T08:13:40.7130177",
+                "requestorUser": "MR.JHON DOE",
+                "accountName": "SunExpress",
+                "costCenter": null,
+                "travelReason": null,
+                "minPrice": 0.0,
+                "maxPrice": 0.0,
+                "timestamp": "0x000000000A808E53",
+                "flights": [
+                    {
+                        "flightNo": "XQ141",
+                        "airlineCompanyCode": "XQ",
+                        "cabinClass": "S",
+                        "departureDate": "2025-06-24T12:35:00",
+                        "departureTime": "12:35:00",
+                        "arrivalDate": "2025-06-24T14:15:00",
+                        "arrivalTime": "14:15:00",
+                        "departureAirPortCode": "AYT",
+                        "departureAirportCodeCountryCode": "TR",
+                        "departureAirportCodeCity": "Antalya",
+                        "arrivalAirPortCode": "FRA",
+                        "arrivalAirportCodeCountryCode": "DE",
+                        "arrivalAirportCodeCity": "Frankfurt",
+                        "directionType": "departure",
+                        "carbonEmissions": 83,
+                        "distance": 654
+                    },
+                    {
+                        "flightNo": "XQ140",
+                        "airlineCompanyCode": "XQ",
+                        "cabinClass": "H",
+                        "departureDate": "2025-06-24T07:30:00",
+                        "departureTime": "07:30:00",
+                        "arrivalDate": "2025-06-24T09:00:00",
+                        "arrivalTime": "09:00:00",
+                        "departureAirPortCode": "FRA",
+                        "departureAirportCodeCountryCode": "DE",
+                        "departureAirportCodeCity": "Frankfurt",
+                        "arrivalAirPortCode": "AYT",
+                        "arrivalAirportCodeCountryCode": "TR",
+                        "arrivalAirportCodeCity": "Antalya",
+                        "directionType": "departure",
+                        "carbonEmissions": 62,
+                        "distance": 650
+                    }
+                ],
+                "passengers": [
+                    {
+                        "ticketNo": "2350000000000",
+                        "oldTicketNo": null,
+                        "ticketType": "sales",
+                        "prices": {
+                            "otherTax": 898.71,
+                            "amount": 5889.71,
+                            "serviceFee": 50.00,
+                            "currency": "TRY",
+                            "taxBase": 4991.00,
+                            "tax": 898.71
+                        },
+                        "returnUrl": "https://travel.bizigo.com/reservations/reservation-summary?reservationCode=TIC-457855&productType=Ticket&reservationList=myReservationsList",
+                        "name": "Mr. Jhon",
+                        "surname": "Hoe",
+                        "gender": "Erkek",
+                        "birthday": "1994-04-18T00:00:00",
+                        "emailAddress": "hoe@sunexpress.com",
+                        "phoneNumber": null,
+                        "employeeId": "00000001",
+                        "userType": "user",
+                        "managers": [
+                            {
+                                "nameSurname": "SERKAN SERTBAŞ",
+                                "recordNo": "00003317",
+                                "operationType": "approvalUser"
+                            }
+                        ]
+                    }
+                ],
+                "sellingSourceType": "Online",
+                "confirmation": {
+                    "linkApprove": "",
+                    "linkReject": "",
+                    "accountPoliticianGroupName": null,
+                    "outoffLimit": null
+                },
+                "travelNumber": "1000000000000",
+                "orderNumber": "",
+                "flightsClassTypename": "Ekonomi",
+                "travelReasonDescription": null,
+                "remainingMinutes": ""
+            },
+            {
+                "status": "Carileme Yapıldı",
+                "bookingId": "TIC-457855",
+                "confirmationNumber": "SRWK64",
+                "amount": 4941.00,
+                "reservationType": "domestic",
+                "orderDateTime": "2025-06-23T08:13:40.7130177",
+                "requestorUser": "MR.JHON DOE",
+                "accountName": "SunExpress",
+                "costCenter": null,
+                "travelReason": null,
+                "minPrice": 0.0,
+                "maxPrice": 0.0,
+                "timestamp": "0x000000000A808E53",
+                "flights": [
+                    {
+                        "flightNo": "XQ141",
+                        "airlineCompanyCode": "XQ",
+                        "cabinClass": "S",
+                        "departureDate": "2025-06-23T12:35:00",
+                        "departureTime": "12:35:00",
+                        "arrivalDate": "2025-06-23T14:15:00",
+                        "arrivalTime": "14:15:00",
+                        "departureAirPortCode": "AYT",
+                        "departureAirportCodeCountryCode": "TR",
+                        "departureAirportCodeCity": "İstanbul",
+                        "arrivalAirPortCode": "FRA",
+                        "arrivalAirportCodeCountryCode": "TR",
+                        "arrivalAirportCodeCity": "Ordugiresun",
+                        "directionType": "departure",
+                        "carbonEmissions": 83,
+                        "distance": 654
+                    },
+                    {
+                        "flightNo": "TK2429",
+                        "airlineCompanyCode": "TK",
+                        "cabinClass": "H",
+                        "departureDate": "2025-06-24T07:30:00",
+                        "departureTime": "07:30:00",
+                        "arrivalDate": "2025-06-24T09:00:00",
+                        "arrivalTime": "09:00:00",
+                        "departureAirPortCode": "FRA",
+                        "departureAirportCodeCountryCode": "TR",
+                        "departureAirportCodeCity": "Antalya",
+                        "arrivalAirPortCode": "IST",
+                        "arrivalAirportCodeCountryCode": "TR",
+                        "arrivalAirportCodeCity": "İstanbul",
+                        "directionType": "departure",
+                        "carbonEmissions": 62,
+                        "distance": 426
+                    },
+                    {
+                        "flightNo": "TK2421",
+                        "airlineCompanyCode": "TK",
+                        "cabinClass": "H",
+                        "departureDate": "2025-06-24T11:30:00",
+                        "departureTime": "11:30:00",
+                        "arrivalDate": "2025-06-24T12:00:00",
+                        "arrivalTime": "12:00:00",
+                        "departureAirPortCode": "IST",
+                        "departureAirportCodeCountryCode": "TR",
+                        "departureAirportCodeCity": "Antalya",
+                        "arrivalAirPortCode": "AYT",
+                        "arrivalAirportCodeCountryCode": "TR",
+                        "arrivalAirportCodeCity": "İstanbul",
+                        "directionType": "departure",
+                        "carbonEmissions": 20,
+                        "distance": 220
+                    }                    
+                ],
+                "passengers": [
+                    {
+                        "ticketNo": "2350000000000",
+                        "oldTicketNo": null,
+                        "ticketType": "sales",
+                        "prices": {
+                            "otherTax": 898.71,
+                            "amount": 5889.71,
+                            "serviceFee": 50.00,
+                            "currency": "TRY",
+                            "taxBase": 4991.00,
+                            "tax": 898.71
+                        },
+                        "returnUrl": "https://travel.bizigo.com/reservations/reservation-summary?reservationCode=TIC-457855&productType=Ticket&reservationList=myReservationsList",
+                        "name": "Mr. Jhon Zoe",
+                        "surname": "Zoe",
+                        "gender": "Erkek",
+                        "birthday": "1994-04-18T00:00:00",
+                        "emailAddress": "jhon@nobody.com",
+                        "phoneNumber": null,
+                        "employeeId": "00000003",
+                        "userType": "user",
+                        "managers": [
+                            {
+                                "nameSurname": "Jhon Moe",
+                                "recordNo": "00000001",
+                                "operationType": "approvalUser"
+                            }
+                        ]
+                    }
+                ],
+                "sellingSourceType": "Offline",
+                "confirmation": {
+                    "linkApprove": "",
+                    "linkReject": "",
+                    "accountPoliticianGroupName": null,
+                    "outoffLimit": null
+                },
+                "travelNumber": "TAHSIS VE PLANLAMA",
+                "orderNumber": "TAHSIS VE PLANLAMA",
+                "flightsClassTypename": "Ekonomi",
+                "travelReasonDescription": null,
+                "remainingMinutes": ""
+            }
+        ],
+        "cars": []
+    },
+    "messageTitle": null
+}
