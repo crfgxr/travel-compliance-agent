@@ -273,4 +273,31 @@ coverage/
 
 # Documentation
 docs/_build/
-site/ 
+site/
+
+# Travel Compliance Agent Specific
+config/secrets.json
+config/api_keys.json
+*.env
+.env.*
+credentials/
+logs/
+temp_data/
+reports/output/
+*.db
+*.sqlite
+*.sqlite3
+travel_cache/
+booking_temp/
+compliance_reports/
+test_data/sensitive/
+
+# Travel API responses (may contain PII)
+api_responses/
+cached_flights/
+passenger_data/
+
+# Temporary processing files
+*.tmp
+processing_*.json
+validation_*.log 
