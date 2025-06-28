@@ -1,8 +1,6 @@
 import json
 import logging
-import streamlit as st
 from typing import Dict, Any, List
-from datetime import datetime
 
 # Set up logger
 logger = logging.getLogger(__name__)
@@ -70,12 +68,12 @@ def format_compliance_result(result: dict) -> str:
 def create_sample_data() -> tuple:
     """Load sample data from JSON files"""
     try:
-        # Load travel approval data from TravelApproval.json
-        with open("TravelApproval.json", "r", encoding="utf-8") as f:
+        # Load travel approval data from sample_data/TravelApproval.json
+        with open("sample_data/TravelApproval.json", "r", encoding="utf-8") as f:
             sample_travel_approval = json.load(f)
 
-        # Load ticket data from Ticket.json
-        with open("Ticket.json", "r", encoding="utf-8") as f:
+        # Load ticket data from sample_data/Ticket.json
+        with open("sample_data/Ticket.json", "r", encoding="utf-8") as f:
             sample_ticket_data = json.load(f)
 
         return sample_travel_approval, sample_ticket_data

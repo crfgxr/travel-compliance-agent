@@ -1,6 +1,6 @@
 # ✈️ Travel Compliance Agent
 
-An AI-powered automation solution for auditing travel booking compliance using LangChain agents and Streamlit.
+An AI-powered automation solution for auditing travel booking compliance using OpenAI's Responses API and Streamlit.
 
 ## 🎯 Project Overview
 
@@ -14,12 +14,11 @@ This system automatically audits travel bookings against three key compliance ru
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Streamlit UI  │    │  LangChain      │    │   OpenAI API    │
-│   - Data Input  │───▶│  Agents         │───▶│   - GPT-4       │
-│   - Results     │    │  - Schema Val   │    │   - Validation  │
-│   - Chat        │    │  - Compliance   │    │   - Analysis    │
-└─────────────────┘    │  - Chat         │    └─────────────────┘
-                       └─────────────────┘
+│   Streamlit UI  │    │  Custom Agents  │    │ OpenAI Responses│
+│   - Data Input  │───▶│  (Native)       │───▶│ API             │
+│   - Results     │    │  - Compliance   │    │   - GPT-4       │
+│   - Chat        │    │  - Chat         │    │   - Direct API  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
                                 │
                        ┌─────────────────┐
                        │  Pydantic       │
@@ -32,7 +31,7 @@ This system automatically audits travel bookings against three key compliance ru
 ## 🚀 Tech Stack
 
 - **Backend**: Python 3.8+
-- **AI Framework**: LangChain with OpenAI GPT-4
+- **AI Framework**: OpenAI Responses API (Direct Integration)
 - **UI**: Streamlit
 - **Data Validation**: Pydantic
 - **Testing**: Pytest
@@ -40,10 +39,10 @@ This system automatically audits travel bookings against three key compliance ru
 
 ### Why This Stack?
 
-- **LangChain**: Provides robust agent framework for AI automation
+- **OpenAI Responses API**: Direct integration with state management and built-in tools
 - **Streamlit**: Rapid prototyping with beautiful, interactive UI
 - **Pydantic**: Type-safe data validation and parsing
-- **OpenAI GPT-4**: Advanced reasoning for complex compliance scenarios
+- **Native Python**: Lightweight implementation without framework overhead
 
 ## 📦 Installation
 

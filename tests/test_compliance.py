@@ -2,14 +2,13 @@ import pytest
 import json
 from datetime import datetime
 from src.models import *
-from src.agents import ComplianceAgent
-from langchain_openai import ChatOpenAI
+from src.agents import ComplianceAgent, OpenAIResponsesClient
 
 
 @pytest.fixture
 def compliance_agent():
     """Create a compliance agent for testing"""
-    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    llm = OpenAIResponsesClient(model="gpt-4o-mini", temperature=0)
     return ComplianceAgent(llm)
 
 
