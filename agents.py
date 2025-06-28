@@ -2,6 +2,10 @@ from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 from typing import List, Dict, Any
 import json
+import logging
+
+# Setup logger
+logger = logging.getLogger(__name__)
 from rules import (
     get_timing_compliance_prompt,
     get_passenger_identity_prompt,
@@ -40,6 +44,7 @@ class ComplianceAgent:
             response = self.llm.invoke([system_message, human_message])
         except Exception as e:
             return {
+                "rule_name": "Flight Ticket Timing",
                 "status": "llm_call_error",
                 "message": str(e),
                 "details": {
@@ -68,6 +73,7 @@ class ComplianceAgent:
                     result = result[0]  # Use the first dict in the list
                 else:
                     return {
+                        "rule_name": "Flight Ticket Timing",
                         "status": "SYSTEM_ERROR",
                         "message": "LLM returned invalid format (expected dictionary, got {})".format(
                             type(result).__name__
@@ -82,10 +88,12 @@ class ComplianceAgent:
             if "status" not in result:
                 result["status"] = "SYSTEM_ERROR"
                 result["message"] = "Missing status field in LLM response"
+                result["rule_name"] = "Flight Ticket Timing"
 
             return result
         except (json.JSONDecodeError, TypeError) as e:
             return {
+                "rule_name": "Flight Ticket Timing",
                 "status": "json_parse_error",
                 "message": "Failed to parse LLM response as valid JSON",
                 "details": {
@@ -119,6 +127,7 @@ class ComplianceAgent:
             response = self.llm.invoke([system_message, human_message])
         except Exception as e:
             return {
+                "rule_name": "Passenger Identity",
                 "status": "llm_call_error",
                 "message": str(e),
                 "details": {
@@ -139,6 +148,7 @@ class ComplianceAgent:
             # Ensure result is a dictionary with required status field
             if not isinstance(result, dict):
                 return {
+                    "rule_name": "Passenger Identity",
                     "status": "SYSTEM_ERROR",
                     "message": "LLM returned invalid format (expected dictionary, got {})".format(
                         type(result).__name__
@@ -153,10 +163,12 @@ class ComplianceAgent:
             if "status" not in result:
                 result["status"] = "SYSTEM_ERROR"
                 result["message"] = "Missing status field in LLM response"
+                result["rule_name"] = "Passenger Identity"
 
             return result
         except (json.JSONDecodeError, TypeError) as e:
             return {
+                "rule_name": "Passenger Identity",
                 "status": "json_parse_error",
                 "message": "Failed to parse LLM response as valid JSON",
                 "details": {
@@ -190,6 +202,7 @@ class ComplianceAgent:
             response = self.llm.invoke([system_message, human_message])
         except Exception as e:
             return {
+                "rule_name": "Route Compliance",
                 "status": "llm_call_error",
                 "message": str(e),
                 "details": {
@@ -210,6 +223,7 @@ class ComplianceAgent:
             # Ensure result is a dictionary with required status field
             if not isinstance(result, dict):
                 return {
+                    "rule_name": "Route Compliance",
                     "status": "SYSTEM_ERROR",
                     "message": "LLM returned invalid format (expected dictionary, got {})".format(
                         type(result).__name__
@@ -224,10 +238,12 @@ class ComplianceAgent:
             if "status" not in result:
                 result["status"] = "SYSTEM_ERROR"
                 result["message"] = "Missing status field in LLM response"
+                result["rule_name"] = "Route Compliance"
 
             return result
         except (json.JSONDecodeError, TypeError) as e:
             return {
+                "rule_name": "Route Compliance",
                 "status": "json_parse_error",
                 "message": "Failed to parse LLM response as valid JSON",
                 "details": {
@@ -241,14 +257,58 @@ class ComplianceAgent:
         self,
         travel_approval: Dict[str, Any],
         flight_reservations: List[Dict[str, Any]],
+        progress_callback=None,
     ) -> Dict[str, Any]:
-        """Generate comprehensive compliance report"""
+        """Generate comprehensive compliance report with progress tracking"""
 
-        results = [
-            self.check_timing_compliance(travel_approval, flight_reservations),
-            self.check_passenger_identity(travel_approval, flight_reservations),
-            self.check_route_compliance(travel_approval, flight_reservations),
+        # Define the compliance checks to run
+        compliance_checks = [
+            {
+                "name": "Flight Ticket Timing",
+                "description": "Checking if flight times are within approved travel period",
+                "method": self.check_timing_compliance,
+                "icon": "⏰",
+            },
+            {
+                "name": "Passenger Identity",
+                "description": "Verifying passenger identities match approval records",
+                "method": self.check_passenger_identity,
+                "icon": "👤",
+            },
+            {
+                "name": "Route Compliance",
+                "description": "Validating airline usage follows account policies",
+                "method": self.check_route_compliance,
+                "icon": "✈️",
+            },
         ]
+
+        results = []
+        total_checks = len(compliance_checks)
+
+        for i, check in enumerate(compliance_checks):
+            # Update progress if callback provided
+            if progress_callback:
+                progress_callback(
+                    current=i + 1,
+                    total=total_checks,
+                    current_job=check["name"],
+                    description=check["description"],
+                    icon=check["icon"],
+                )
+
+            # Log the current job
+            logger.info(
+                f"{check['icon']} Running {check['name']} check ({i+1}/{total_checks})"
+            )
+
+            # Execute the compliance check
+            result = check["method"](travel_approval, flight_reservations)
+            results.append(result)
+
+            # Log completion
+            status = result.get("status", "UNKNOWN")
+            logger.info(f"✅ {check['name']} check completed: {status}")
 
         # Determine overall status
         system_error_count = sum(

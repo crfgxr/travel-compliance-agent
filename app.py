@@ -132,64 +132,66 @@ def main():
             )
 
             if any_data_present:
-                # Show reset button when any data is present
-                if st.button(
-                    "🔄 Reset Data",
-                    disabled=st.session_state.get("loading_sample", False),
-                    help="Clear all JSON input data",
-                ):
-                    st.session_state.sample_travel_data = ""
-                    st.session_state.sample_ticket_data = ""
-                    st.session_state.manual_data_entered = False
-                    # Force text areas to refresh by updating their keys
-                    st.session_state.travel_input = ""
-                    st.session_state.ticket_input = ""
-                    logger.info("🔄 All JSON data reset by user")
-                    show_notification("All data cleared successfully!", "info")
-                    st.rerun()
+                # Show reset button when any data is present and audit is not running
+                if not st.session_state.get("running_audit", False):
+                    if st.button(
+                        "🔄 Reset Data",
+                        disabled=st.session_state.get("loading_sample", False),
+                        help="Clear all JSON input data",
+                    ):
+                        st.session_state.sample_travel_data = ""
+                        st.session_state.sample_ticket_data = ""
+                        st.session_state.manual_data_entered = False
+                        # Force text areas to refresh by updating their keys
+                        st.session_state.travel_input = ""
+                        st.session_state.ticket_input = ""
+                        logger.info("🔄 All JSON data reset by user")
+                        show_notification("All data cleared successfully!", "info")
+                        st.rerun()
             else:
-                # Show load button when no data is present
-                if st.button(
-                    "📋 Load Sample Data",
-                    disabled=st.session_state.get("loading_sample", False),
-                    help="Load example travel approval and ticket data",
-                ):
-                    st.session_state.loading_sample = True
-                    with st.spinner("Loading sample data..."):
-                        logger.info("📋 Loading sample data...")
-                        sample_travel, sample_ticket = create_sample_data()
+                # Show load button when no data is present and audit is not running
+                if not st.session_state.get("running_audit", False):
+                    if st.button(
+                        "📋 Load Sample Data",
+                        disabled=st.session_state.get("loading_sample", False),
+                        help="Load example travel approval and ticket data",
+                    ):
+                        st.session_state.loading_sample = True
+                        with st.spinner("Loading sample data..."):
+                            logger.info("📋 Loading sample data...")
+                            sample_travel, sample_ticket = create_sample_data()
 
-                        if sample_travel is None or sample_ticket is None:
-                            show_notification(
-                                "Failed to load sample data. Check that TravelApproval.json and Ticket.json files exist.",
-                                "error",
-                            )
-                            logger.error("❌ Failed to load sample data files")
-                        else:
-                            st.session_state.sample_travel_data = json.dumps(
-                                sample_travel, indent=2
-                            )
-                            st.session_state.sample_ticket_data = json.dumps(
-                                sample_ticket, indent=2
-                            )
-                            # Also set the text area keys to display the data
-                            st.session_state.travel_input = (
-                                st.session_state.sample_travel_data
-                            )
-                            st.session_state.ticket_input = (
-                                st.session_state.sample_ticket_data
-                            )
-                            show_notification(
-                                "Sample data loaded successfully!", "success"
-                            )
-                            logger.info("✅ Sample data loaded successfully")
-                    st.session_state.loading_sample = False
-                    st.rerun()
+                            if sample_travel is None or sample_ticket is None:
+                                show_notification(
+                                    "Failed to load sample data. Check that TravelApproval.json and Ticket.json files exist.",
+                                    "error",
+                                )
+                                logger.error("❌ Failed to load sample data files")
+                            else:
+                                st.session_state.sample_travel_data = json.dumps(
+                                    sample_travel, indent=2
+                                )
+                                st.session_state.sample_ticket_data = json.dumps(
+                                    sample_ticket, indent=2
+                                )
+                                # Also set the text area keys to display the data
+                                st.session_state.travel_input = (
+                                    st.session_state.sample_travel_data
+                                )
+                                st.session_state.ticket_input = (
+                                    st.session_state.sample_ticket_data
+                                )
+                                show_notification(
+                                    "Sample data loaded successfully!", "success"
+                                )
+                                logger.info("✅ Sample data loaded successfully")
+                        st.session_state.loading_sample = False
+                        st.rerun()
 
     # Main content area
     if not st.session_state.get("api_key_validated", False):
         show_notification(
-            "Please enter a valid OpenAI API key in the sidebar to continue.",
+            "🔑 Please enter a valid OpenAI API key in the sidebar to continue.",
             "warning",
         )
         logger.warning("⚠️ No valid OpenAI API key provided")
@@ -257,18 +259,19 @@ def main():
         not travel_approval_input.strip() or not ticket_data_input.strip()
     )
 
-    # Compliance check button
-    if st.button(
-        "🚀 Run Compliance Audit",
-        type="primary",
-        disabled=st.session_state.get("running_audit", False) or either_input_empty,
-    ):
-        if travel_approval_input and ticket_data_input:
-            st.session_state.running_audit = True
-            st.session_state.audit_completed = False  # Reset completion flag
-            st.session_state.travel_input_data = travel_approval_input
-            st.session_state.ticket_input_data = ticket_data_input
-            st.rerun()
+    # Compliance check button (only show when not running audit)
+    if not st.session_state.get("running_audit", False):
+        if st.button(
+            "🚀 Run Compliance Audit",
+            type="primary",
+            disabled=either_input_empty,
+        ):
+            if travel_approval_input and ticket_data_input:
+                st.session_state.running_audit = True
+                st.session_state.audit_completed = False  # Reset completion flag
+                st.session_state.travel_input_data = travel_approval_input
+                st.session_state.ticket_input_data = ticket_data_input
+                st.rerun()
 
     # Handle audit execution if running_audit is True
     if st.session_state.get("running_audit", False):
@@ -303,10 +306,56 @@ def main():
 
                     if travel_approval and flight_reservations:
                         logger.info("🔍 Running compliance checks...")
-                        # Generate compliance report
+
+                        # Create progress tracking section that persists across runs
+                        st.subheader("🔄 Running Compliance Audit")
+
+                        # Create persistent progress elements
+                        progress_bar = st.progress(0)
+                        status_text = st.empty()
+                        current_job_text = st.empty()
+
+                        # Progress callback function
+                        def update_progress(
+                            current, total, current_job, description, icon
+                        ):
+                            progress = current / total
+                            progress_bar.progress(progress)
+
+                            if current <= total:
+                                if current == total:
+                                    status_text.warning(
+                                        f"⌛️ All {total} compliance checks completed, now generating report!"
+                                    )
+                                    current_job_text.empty()  # Clear job display when completed
+                                else:
+                                    status_text.text(
+                                        f"Progress: {current}/{total} checks completed"
+                                    )
+                                    current_job_text.markdown(
+                                        f"**{icon} {current_job}**\n{description}"
+                                    )
+                            else:
+                                status_text.text(
+                                    f"Running check {current} of {total}..."
+                                )
+                                current_job_text.markdown(
+                                    f"**{icon} {current_job}**\n{description}"
+                                )
+
+                        # Generate compliance report with progress tracking
                         report = compliance_agent.generate_compliance_report(
-                            travel_approval, flight_reservations
+                            travel_approval,
+                            flight_reservations,
+                            progress_callback=update_progress,
                         )
+
+                        # Clear progress indicators and show completion
+                        progress_bar.progress(1.0)
+                        status_text.success("✅ Audit Completed - Review results below")
+                        current_job_text.empty()  # Clear the current job display
+                        # Add spacing after progress section
+                        st.markdown("---")
 
                         logger.info(
                             f"📊 Compliance audit completed: {report['overall_status']}"
@@ -330,10 +379,7 @@ def main():
                             )
                             with st.expander(
                                 format_compliance_result(result),
-                                expanded=(
-                                    result.get("status")
-                                    in ["NON_COMPLIANT", "SYSTEM_ERROR"]
-                                ),
+                                expanded=False,
                             ):
                                 details = result.get("details", {})
                                 violations = details.get("violations", [])
@@ -413,6 +459,11 @@ def main():
                                         logger.warning(
                                             f"Violation in {result.get('rule_name', 'Unknown')}: {violation.get('reason', str(violation))}"
                                         )
+                                elif result.get("status") == "SYSTEM_ERROR":
+                                    # System error occurred - can't determine compliance status
+                                    st.error(
+                                        "❌ **System Error:** Unable to complete compliance check"
+                                    )
                                 else:
                                     st.success("✅ No issues found for this rule.")
 
