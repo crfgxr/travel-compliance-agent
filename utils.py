@@ -56,11 +56,18 @@ def format_compliance_result(result: dict) -> str:
         "COMPLIANT": "✅",
         "NON_COMPLIANT": "❌",
         "WARNING": "⚠️",
+        "SYSTEM_ERROR": "🚨",
+        "json_parse_error": "🚨",
+        "llm_call_error": "🚨",
     }
 
     status = result.get("status", "UNKNOWN")
     rule_name = result.get("rule_name", "Unknown Rule")
     message = result.get("message", "No message")
+
+    # Special handling for error statuses to make them clearer
+    if status in ["json_parse_error", "llm_call_error", "SYSTEM_ERROR"]:
+        return f"{status_emoji.get(status, '❓')} **{rule_name}**: Failed to parse LLM response as valid JSON"
 
     return f"{status_emoji.get(status, '❓')} **{rule_name}**: {message}"
 

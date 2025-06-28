@@ -311,10 +311,13 @@ class ComplianceAgent:
             logger.info(f"✅ {check['name']} check completed: {status}")
 
         # Determine overall status
+        # Define all error types that should be considered as system errors
+        system_error_statuses = ["SYSTEM_ERROR", "json_parse_error", "llm_call_error"]
+
         system_error_count = sum(
             1
             for r in results
-            if isinstance(r, dict) and r.get("status") == "SYSTEM_ERROR"
+            if isinstance(r, dict) and r.get("status") in system_error_statuses
         )
         non_compliant_count = sum(
             1
@@ -330,7 +333,7 @@ class ComplianceAgent:
             summary = f"SYSTEM ERROR: {system_error_count} system errors occurred"
         elif non_compliant_count > 0:
             overall_status = "NON_COMPLIANT"
-            summary = f"FAILED: {non_compliant_count} critical violations found"
+            summary = f"VIOLATION: {non_compliant_count} critical violations found"
         elif warning_count > 0:
             overall_status = "WARNING"
             summary = f"WARNING: {warning_count} issues require attention"

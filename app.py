@@ -459,11 +459,32 @@ def main():
                                         logger.warning(
                                             f"Violation in {result.get('rule_name', 'Unknown')}: {violation.get('reason', str(violation))}"
                                         )
-                                elif result.get("status") == "SYSTEM_ERROR":
+                                elif result.get("status") in [
+                                    "SYSTEM_ERROR",
+                                    "json_parse_error",
+                                    "llm_call_error",
+                                ]:
                                     # System error occurred - can't determine compliance status
                                     st.error(
-                                        "❌ **System Error:** Unable to complete compliance check"
+                                        "❌ **System Error:** Unable to complete compliance check due to technical issues"
                                     )
+                                    # Show additional details if available
+                                    if details.get("error_type"):
+                                        st.info(
+                                            f"**Error Type:** {details.get('error_type')}"
+                                        )
+                                    if details.get("error_message"):
+                                        st.info(
+                                            f"**Error Message:** {details.get('error_message')}"
+                                        )
+                                    if details.get("raw_response"):
+                                        st.subheader(
+                                            "🔍 Raw AI Response (for debugging)"
+                                        )
+                                        st.code(details.get("raw_response"))
+                                        st.info(
+                                            "💡 **Suggestion:** This appears to be an AI response parsing issue. The rule could not be properly evaluated."
+                                        )
                                 else:
                                     st.success("✅ No issues found for this rule.")
 
