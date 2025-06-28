@@ -350,10 +350,10 @@ def main():
                                                 f"**System Error:** {details.get('error_message', 'Unknown error')}"
                                             )
                                             if details.get("raw_response"):
-                                                with st.expander(
+                                                st.subheader(
                                                     "🔍 Raw AI Response (for debugging)"
-                                                ):
-                                                    st.code(details.get("raw_response"))
+                                                )
+                                                st.code(details.get("raw_response"))
                                         else:
                                             # Display actual compliance violation
                                             if violation.get("reason"):
@@ -403,9 +403,9 @@ def main():
                                                     f"**💡 How to Fix:** {violation.get('recommendation')}"
                                                 )
 
-                                            # Show raw violation data in collapsed section for debugging
-                                            with st.expander("🔍 Technical Details"):
-                                                st.json(violation)
+                                            # Show raw violation data for debugging
+                                            st.subheader("🔍 Technical Details")
+                                            st.json(violation)
 
                                         if i < len(violations):
                                             st.divider()

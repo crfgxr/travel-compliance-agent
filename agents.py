@@ -35,35 +35,63 @@ class ComplianceAgent:
 
         human_message = HumanMessage(content=user_prompt)
 
+        # First, try to call the LLM
         try:
             response = self.llm.invoke([system_message, human_message])
-            result = json.loads(response.content)
-            return result
-        except json.JSONDecodeError as e:
+        except Exception as e:
             return {
-                "rule_name": TIMING_RULE_CONFIG["rule_name"],
-                "status": "NON_COMPLIANT",
-                "message": "Failed to parse AI response as valid JSON",
+                "status": "llm_call_error",
+                "message": str(e),
+                "details": {
+                    "error_type": "llm_call_error",
+                    "error_message": str(e),
+                },
+            }
+
+        # Then, try to parse the response as JSON
+        try:
+            # Handle both string and already parsed content
+            if isinstance(response.content, str):
+                result = json.loads(response.content)
+            else:
+                # If content is already a Python object (list/dict), use it directly
+                result = response.content
+
+            # Ensure result is a dictionary with required status field
+            if not isinstance(result, dict):
+                # If it's a list, check if it contains a valid dict
+                if (
+                    isinstance(result, list)
+                    and len(result) > 0
+                    and isinstance(result[0], dict)
+                ):
+                    result = result[0]  # Use the first dict in the list
+                else:
+                    return {
+                        "status": "SYSTEM_ERROR",
+                        "message": "LLM returned invalid format (expected dictionary, got {})".format(
+                            type(result).__name__
+                        ),
+                        "details": {
+                            "error_type": "invalid_format",
+                            "raw_response": result,
+                        },
+                    }
+
+            # Ensure status field exists
+            if "status" not in result:
+                result["status"] = "SYSTEM_ERROR"
+                result["message"] = "Missing status field in LLM response"
+
+            return result
+        except (json.JSONDecodeError, TypeError) as e:
+            return {
+                "status": "json_parse_error",
+                "message": "Failed to parse LLM response as valid JSON",
                 "details": {
                     "error_type": "json_parse_error",
                     "error_message": str(e),
-                    "raw_response": (
-                        response.content
-                        if "response" in locals()
-                        else "No response received"
-                    ),
-                    "violations": [],
-                },
-            }
-        except Exception as e:
-            return {
-                "rule_name": TIMING_RULE_CONFIG["rule_name"],
-                "status": "SYSTEM_ERROR",
-                "message": "System error occurred during compliance analysis",
-                "details": {
-                    "error_type": "system_error",
-                    "error_message": str(e),
-                    "violations": [{"error": "Analysis failed"}],
+                    "raw_response": response.content,
                 },
             }
 
@@ -86,35 +114,55 @@ class ComplianceAgent:
 
         human_message = HumanMessage(content=user_prompt)
 
+        # First, try to call the LLM
         try:
             response = self.llm.invoke([system_message, human_message])
-            result = json.loads(response.content)
-            return result
-        except json.JSONDecodeError as e:
+        except Exception as e:
             return {
-                "rule_name": PASSENGER_IDENTITY_RULE_CONFIG["rule_name"],
-                "status": "NON_COMPLIANT",
-                "message": "Failed to parse AI response as valid JSON",
+                "status": "llm_call_error",
+                "message": str(e),
+                "details": {
+                    "error_type": "llm_call_error",
+                    "error_message": str(e),
+                },
+            }
+
+        # Then, try to parse the response as JSON
+        try:
+            # Handle both string and already parsed content
+            if isinstance(response.content, str):
+                result = json.loads(response.content)
+            else:
+                # If content is already a Python object (list/dict), use it directly
+                result = response.content
+
+            # Ensure result is a dictionary with required status field
+            if not isinstance(result, dict):
+                return {
+                    "status": "SYSTEM_ERROR",
+                    "message": "LLM returned invalid format (expected dictionary, got {})".format(
+                        type(result).__name__
+                    ),
+                    "details": {
+                        "error_type": "invalid_format",
+                        "raw_response": result,
+                    },
+                }
+
+            # Ensure status field exists
+            if "status" not in result:
+                result["status"] = "SYSTEM_ERROR"
+                result["message"] = "Missing status field in LLM response"
+
+            return result
+        except (json.JSONDecodeError, TypeError) as e:
+            return {
+                "status": "json_parse_error",
+                "message": "Failed to parse LLM response as valid JSON",
                 "details": {
                     "error_type": "json_parse_error",
                     "error_message": str(e),
-                    "raw_response": (
-                        response.content
-                        if "response" in locals()
-                        else "No response received"
-                    ),
-                    "violations": [],
-                },
-            }
-        except Exception as e:
-            return {
-                "rule_name": PASSENGER_IDENTITY_RULE_CONFIG["rule_name"],
-                "status": "SYSTEM_ERROR",
-                "message": "System error occurred during compliance analysis",
-                "details": {
-                    "error_type": "system_error",
-                    "error_message": str(e),
-                    "violations": [{"error": "Analysis failed"}],
+                    "raw_response": response.content,
                 },
             }
 
@@ -137,35 +185,55 @@ class ComplianceAgent:
 
         human_message = HumanMessage(content=user_prompt)
 
+        # First, try to call the LLM
         try:
             response = self.llm.invoke([system_message, human_message])
-            result = json.loads(response.content)
-            return result
-        except json.JSONDecodeError as e:
+        except Exception as e:
             return {
-                "rule_name": ROUTE_COMPLIANCE_RULE_CONFIG["rule_name"],
-                "status": "NON_COMPLIANT",
-                "message": "Failed to parse AI response as valid JSON",
+                "status": "llm_call_error",
+                "message": str(e),
+                "details": {
+                    "error_type": "llm_call_error",
+                    "error_message": str(e),
+                },
+            }
+
+        # Then, try to parse the response as JSON
+        try:
+            # Handle both string and already parsed content
+            if isinstance(response.content, str):
+                result = json.loads(response.content)
+            else:
+                # If content is already a Python object (list/dict), use it directly
+                result = response.content
+
+            # Ensure result is a dictionary with required status field
+            if not isinstance(result, dict):
+                return {
+                    "status": "SYSTEM_ERROR",
+                    "message": "LLM returned invalid format (expected dictionary, got {})".format(
+                        type(result).__name__
+                    ),
+                    "details": {
+                        "error_type": "invalid_format",
+                        "raw_response": result,
+                    },
+                }
+
+            # Ensure status field exists
+            if "status" not in result:
+                result["status"] = "SYSTEM_ERROR"
+                result["message"] = "Missing status field in LLM response"
+
+            return result
+        except (json.JSONDecodeError, TypeError) as e:
+            return {
+                "status": "json_parse_error",
+                "message": "Failed to parse LLM response as valid JSON",
                 "details": {
                     "error_type": "json_parse_error",
                     "error_message": str(e),
-                    "raw_response": (
-                        response.content
-                        if "response" in locals()
-                        else "No response received"
-                    ),
-                    "violations": [],
-                },
-            }
-        except Exception as e:
-            return {
-                "rule_name": ROUTE_COMPLIANCE_RULE_CONFIG["rule_name"],
-                "status": "SYSTEM_ERROR",
-                "message": "System error occurred during compliance analysis",
-                "details": {
-                    "error_type": "system_error",
-                    "error_message": str(e),
-                    "violations": [{"error": "Analysis failed"}],
+                    "raw_response": response.content,
                 },
             }
 
@@ -184,12 +252,18 @@ class ComplianceAgent:
 
         # Determine overall status
         system_error_count = sum(
-            1 for r in results if r.get("status") == "SYSTEM_ERROR"
+            1
+            for r in results
+            if isinstance(r, dict) and r.get("status") == "SYSTEM_ERROR"
         )
         non_compliant_count = sum(
-            1 for r in results if r.get("status") == "NON_COMPLIANT"
+            1
+            for r in results
+            if isinstance(r, dict) and r.get("status") == "NON_COMPLIANT"
         )
-        warning_count = sum(1 for r in results if r.get("status") == "WARNING")
+        warning_count = sum(
+            1 for r in results if isinstance(r, dict) and r.get("status") == "WARNING"
+        )
 
         if system_error_count > 0:
             overall_status = "SYSTEM_ERROR"
@@ -217,12 +291,12 @@ def create_llm_client(
     temperature: float = 0,
     openai_api_key: str = None,
 ) -> ChatOpenAI:
-    """Create and return a ChatOpenAI instance with Responses API"""
+    """Create and return a ChatOpenAI instance"""
     return ChatOpenAI(
         model=model,
         temperature=temperature,
         openai_api_key=openai_api_key,
-        output_version="responses/v1",  # Enable Responses API
+        # output_version="responses/v1",  # Temporarily disabled
     )
 
 

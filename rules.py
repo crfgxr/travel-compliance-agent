@@ -67,7 +67,6 @@ PASSENGER_IDENTITY_VIOLATION_TEMPLATE = {
     "booking_reference": "booking ID or confirmation number",
     "issue_type": "name_mismatch|employee_id_mismatch|unauthorized_passenger|missing_approval",
     "expected_name": "correct name from approval (if applicable)",
-    "recommendation": "What needs to be done to resolve this issue",
 }
 
 
@@ -103,7 +102,6 @@ ROUTE_COMPLIANCE_VIOLATION_TEMPLATE = {
     "route": "departure airport -> arrival airport",
     "booking_reference": "booking ID or confirmation number",
     "policy_rule": "specific policy rule that was violated",
-    "recommendation": "What action should be taken to resolve this",
 }
 
 
@@ -131,24 +129,33 @@ Flight Reservations Data:
 Rules to check:
 {rules_text}
 
-Analyze the data and return a JSON response with:
+Analyze the data and return a JSON response with this EXACT structure:
 {{
     "rule_name": "{TIMING_RULE_CONFIG['rule_name']}",
-    "status": "COMPLIANT" or "NON_COMPLIANT",
+    "status": "COMPLIANT",
     "message": "Brief summary of findings for the user",
     "details": {{
         "violations": [
-            {TIMING_VIOLATION_TEMPLATE}
+            {{
+                "flight_number": "flight number (e.g., XQ141)",
+                "reason": "Clear explanation of why this violates the rule",
+                "departure_date": "actual departure date/time",
+                "arrival_date": "actual arrival date/time",
+                "approved_period": "approved travel period dates",
+                "issue_type": "departure_too_early|arrival_too_late|departure_too_late|arrival_too_early"
+            }}
         ]
     }}
 }}
 
 Important: 
+- Set status to "NON_COMPLIANT" if violations found, "COMPLIANT" if no violations
 - Write violation reasons in clear, user-friendly language
 - Explain exactly what rule was broken and why
 - Provide actionable recommendations
 - If compliant, return empty violations array
-- Only return valid JSON
+- MUST return valid JSON object (not array)
+- ALWAYS include all required fields: rule_name, status, message, details
 """
 
 
@@ -173,25 +180,35 @@ Flight Reservations Data:
 Rules to check:
 {rules_text}
 
-Analyze the data and return a JSON response with:
+Analyze the data and return a JSON response with this EXACT structure:
 {{
     "rule_name": "{PASSENGER_IDENTITY_RULE_CONFIG['rule_name']}",
-    "status": "COMPLIANT" or "NON_COMPLIANT",
+    "status": "COMPLIANT",
     "message": "Brief summary of findings for the user",
     "details": {{
         "violations": [
-            {PASSENGER_IDENTITY_VIOLATION_TEMPLATE}
+            {{
+                "passenger_name": "passenger name from ticket",
+                "reason": "Clear explanation of why this passenger is not compliant",
+                "ticket_employee_id": "employee ID from flight ticket",
+                "approved_employee_id": "employee ID from travel approval (if exists)",
+                "booking_reference": "booking ID or confirmation number",
+                "issue_type": "name_mismatch|employee_id_mismatch|unauthorized_passenger|missing_approval",
+                "expected_name": "correct name from approval (if applicable)"
+            }}
         ]
     }}
 }}
 
 Important:
+- Set status to "NON_COMPLIANT" if violations found, "COMPLIANT" if no violations
 - Write violation reasons in clear, user-friendly language
 - Explain exactly what identity issue was found
 - Show what was expected vs what was found
 - Provide specific steps to resolve each issue
 - If compliant, return empty violations array
-- Only return valid JSON
+- MUST return valid JSON object (not array)
+- ALWAYS include all required fields: rule_name, status, message, details
 """
 
 
@@ -216,26 +233,39 @@ Flight Reservations Data:
 Rules to check:
 {rules_text}
 
-Analyze the data and return a JSON response with:
+Analyze the data and return a JSON response with this EXACT structure:
 {{
     "rule_name": "{ROUTE_COMPLIANCE_RULE_CONFIG['rule_name']}",
-    "status": "COMPLIANT" or "NON_COMPLIANT", 
+    "status": "COMPLIANT",
     "message": "Brief summary of findings for the user",
     "details": {{
         "violations": [
-            {ROUTE_COMPLIANCE_VIOLATION_TEMPLATE}
+            {{
+                "flight_number": "flight number (e.g., TK123)",
+                "reason": "Clear explanation of why this flight violates the airline policy",
+                "actual_airline": "airline code that was used",
+                "actual_airline_name": "full airline name",
+                "required_airline": "airline code that should have been used",
+                "required_airline_name": "full name of required airline",
+                "account_name": "travel account name",
+                "route": "departure airport -> arrival airport",
+                "booking_reference": "booking ID or confirmation number",
+                "policy_rule": "specific policy rule that was violated"
+            }}
         ]
     }}
 }}
 
 Important:
+- Set status to "NON_COMPLIANT" if violations found, "COMPLIANT" if no violations
 - Write violation reasons in clear, user-friendly language
 - Explain which airline policy rule was broken
 - Show what airline was used vs what should have been used
 - Include full airline names, not just codes
 - Provide clear instructions on how to fix the issue
 - If compliant, return empty violations array
-- Only return valid JSON
+- MUST return valid JSON object (not array)
+- ALWAYS include all required fields: rule_name, status, message, details
 """
 
 
