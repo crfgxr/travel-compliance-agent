@@ -327,3 +327,6 @@ def add_new_rule_type(rule_key: str, config: Dict, rules: List[str], prompt_func
         "rules": rules,
         "prompt_function": prompt_function,
     }
+
+
+# v0.1 working
