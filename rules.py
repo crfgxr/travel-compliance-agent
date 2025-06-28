@@ -13,8 +13,9 @@ from typing import Dict, Any, List
 # =============================================================================
 
 TIMING_RULES = [
-    "All flight departures must be within the travel period (travelBeginDate to travelEndDate)",
-    "All flight arrivals must be within the travel period (travelBeginDate to travelEndDate)",
+    "All flight departures must occur on or after the travel start date/time (travelBeginDate) and on or before the travel end date/time (travelEndDate) - endpoints are INCLUSIVE",
+    "All flight arrivals must occur on or after the travel start date/time (travelBeginDate) and on or before the travel end date/time (travelEndDate) - endpoints are INCLUSIVE",
+    "A flight is compliant if: travelBeginDate <= departureDateTime <= travelEndDate AND travelBeginDate <= arrivalDateTime <= travelEndDate",
 ]
 
 TIMING_RULE_CONFIG = {
@@ -118,7 +119,7 @@ def get_timing_compliance_prompt(
     rules_text = "\n".join([f"{i+1}. {rule}" for i, rule in enumerate(TIMING_RULES)])
 
     return f"""
-Check if flight times fall within the approved travel period.
+Check if flight times fall within the approved travel period using INCLUSIVE date comparisons.
 
 Travel Approval Data:
 {travel_approval}
@@ -128,6 +129,20 @@ Flight Reservations Data:
 
 Rules to check:
 {rules_text}
+
+IMPORTANT DATE COMPARISON LOGIC:
+- Extract travelBeginDate and travelEndDate from travel approval
+- For each flight, extract departureDate and arrivalDate
+- A flight is COMPLIANT if BOTH conditions are true:
+  1. travelBeginDate <= departureDate <= travelEndDate (inclusive)
+  2. travelBeginDate <= arrivalDate <= travelEndDate (inclusive)
+- Dates should be compared as ISO datetime strings or parsed datetime objects
+- If arrival/departure is exactly equal to start/end dates, this is COMPLIANT
+
+EXAMPLE:
+Travel Period: 2025-06-22T09:00:00 to 2025-06-26T09:00:00
+Flight: Departure 2025-06-24T07:30:00, Arrival 2025-06-24T09:00:00
+Result: COMPLIANT (both times are within the inclusive range)
 
 Analyze the data and return a JSON response with this EXACT structure:
 {{
