@@ -32,15 +32,22 @@ load_dotenv()
 
 # Simple notification system using Streamlit's built-in components
 def show_notification(message: str, type: str = "info"):
-    """Show a notification using Streamlit's built-in components"""
+    """Show notification using Streamlit's built-in components and log to terminal"""
     if type == "success":
         st.success(message)
+        logger.info(f"✅ {message}")
     elif type == "error":
         st.error(message)
+        logger.error(f"❌ {message}")  # Log errors to terminal
     elif type == "warning":
         st.warning(message)
+        logger.warning(f"⚠️ {message}")  # Log warnings to terminal
+    elif type == "info":
+        st.info(message)
+        logger.info(f"ℹ️ {message}")
     else:
         st.info(message)
+        logger.info(f"ℹ️ {message}")
 
 
 # Page configuration
@@ -246,13 +253,35 @@ def main():
         ):
             if travel_approval_input and ticket_data_input:
                 st.session_state.running_audit = True
+                st.session_state.travel_input_data = travel_approval_input
+                st.session_state.ticket_input_data = ticket_data_input
+                st.rerun()
+
+        # Handle audit execution if running_audit is True
+        if st.session_state.get("running_audit", False):
+            travel_approval_input = st.session_state.get("travel_input_data", "")
+            ticket_data_input = st.session_state.get("ticket_input_data", "")
+
+            if travel_approval_input and ticket_data_input:
                 logger.info("🚀 Starting compliance audit...")
                 with st.spinner("Running compliance audit..."):
                     # Parse JSON data
                     travel_data = parse_json_input(travel_approval_input)
                     ticket_data = parse_json_input(ticket_data_input)
 
-                    if travel_data and ticket_data:
+                    # Check for JSON parsing errors
+                    json_errors = []
+                    if travel_data is None:
+                        json_errors.append("Travel Approval JSON is invalid or empty")
+                    if ticket_data is None:
+                        json_errors.append("Flight Ticket JSON is invalid or empty")
+
+                    if json_errors:
+                        show_notification("JSON parsing failed", "error")
+                        for error in json_errors:
+                            show_notification(error, "error")
+                        st.session_state.running_audit = False
+                    elif travel_data and ticket_data:
                         # Validate schemas first
                         logger.info("🔍 Validating schemas...")
                         travel_validation = schema_agent.validate_schema(
@@ -285,69 +314,72 @@ def main():
                                 show_notification(f"{error}", "error")
                                 logger.error(f"Schema error: {error}")
                             st.session_state.running_audit = False
-                            return
                         else:
                             show_notification("Schema validation passed!", "success")
                             logger.info("✅ All schemas validated successfully")
-                        logger.info("📊 Extracting data for LLM processing...")
-                        # Extract data from JSON structures
-                        travel_approval, flight_reservations = extract_data_from_json(
-                            travel_data, ticket_data
-                        )
 
-                        if travel_approval and flight_reservations:
-                            logger.info("🔍 Running compliance checks...")
-                            # Generate compliance report
-                            report = compliance_agent.generate_compliance_report(
-                                travel_approval, flight_reservations
+                            logger.info("📊 Extracting data for LLM processing...")
+                            # Extract data from JSON structures
+                            travel_approval, flight_reservations = (
+                                extract_data_from_json(travel_data, ticket_data)
                             )
 
-                            logger.info(
-                                f"📊 Compliance audit completed: {report.overall_status}"
-                            )
-                            logger.info(f"Results: {len(report.results)} rules checked")
-
-                            # Display results
-                            st.header("📊 Compliance Audit Results")
-
-                            # Overall status
-                            status_class = f"status-{report.overall_status.value.lower().replace('_', '-')}"
-                            st.markdown(
-                                f'<div class="{status_class}"><h3>{report.summary}</h3></div>',
-                                unsafe_allow_html=True,
-                            )
-
-                            # Log each rule result
-                            for result in report.results:
-                                logger.info(
-                                    f"Rule '{result.rule_name}': {result.status} - {result.message}"
+                            if travel_approval and flight_reservations:
+                                logger.info("🔍 Running compliance checks...")
+                                # Generate compliance report
+                                report = compliance_agent.generate_compliance_report(
+                                    travel_approval, flight_reservations
                                 )
-                                with st.expander(
-                                    format_compliance_result(result),
-                                    expanded=(result.get("status") != "COMPLIANT"),
-                                ):
-                                    if result.get("details") and result.get(
-                                        "details", {}
-                                    ).get("violations"):
-                                        st.subheader("Violation Details:")
-                                        for violation in result.get("details", {}).get(
-                                            "violations", []
-                                        ):
-                                            st.json(violation)
-                                            logger.warning(
-                                                f"Violation in {result.get('rule_name', 'Unknown')}: {violation}"
-                                            )
-                                    else:
-                                        st.success("No issues found for this rule.")
 
-                            # Store results in session state for chat
-                            st.session_state.compliance_report = report
-                            st.session_state.travel_data = travel_data
-                            st.session_state.ticket_data = ticket_data
+                                logger.info(
+                                    f"📊 Compliance audit completed: {report.overall_status}"
+                                )
+                                logger.info(
+                                    f"Results: {len(report.results)} rules checked"
+                                )
 
-                            logger.info(
-                                "✅ Compliance audit completed and results displayed"
-                            )
+                                # Display results
+                                st.header("📊 Compliance Audit Results")
+
+                                # Overall status
+                                status_class = f"status-{report.overall_status.value.lower().replace('_', '-')}"
+                                st.markdown(
+                                    f'<div class="{status_class}"><h3>{report.summary}</h3></div>',
+                                    unsafe_allow_html=True,
+                                )
+
+                                # Log each rule result
+                                for result in report.results:
+                                    logger.info(
+                                        f"Rule '{result.rule_name}': {result.status} - {result.message}"
+                                    )
+                                    with st.expander(
+                                        format_compliance_result(result),
+                                        expanded=(result.get("status") != "COMPLIANT"),
+                                    ):
+                                        if result.get("details") and result.get(
+                                            "details", {}
+                                        ).get("violations"):
+                                            st.subheader("Violation Details:")
+                                            for violation in result.get(
+                                                "details", {}
+                                            ).get("violations", []):
+                                                st.json(violation)
+                                                logger.warning(
+                                                    f"Violation in {result.get('rule_name', 'Unknown')}: {violation}"
+                                                )
+                                        else:
+                                            st.success("No issues found for this rule.")
+
+                                # Store results in session state for chat
+                                st.session_state.compliance_report = report
+                                st.session_state.travel_data = travel_data
+                                st.session_state.ticket_data = ticket_data
+
+                                logger.info(
+                                    "✅ Compliance audit completed and results displayed"
+                                )
+                            st.session_state.running_audit = False
                 st.session_state.running_audit = False
             else:
                 show_notification(

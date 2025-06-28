@@ -1,7 +1,11 @@
 import json
+import logging
 import streamlit as st
 from typing import Dict, Any, List
 from datetime import datetime
+
+# Set up logger
+logger = logging.getLogger(__name__)
 
 
 def validate_openai_key(api_key: str) -> bool:
@@ -14,19 +18,8 @@ def validate_openai_key(api_key: str) -> bool:
         client.models.list()
         return True
     except Exception as e:
-        # Import here to avoid circular imports
-        if "toasters" not in st.session_state:
-            st.session_state.toasters = []
-
-        # Add error to toasters
-        toaster = {
-            "id": len(st.session_state.toasters),
-            "message": f"Invalid OpenAI API key: {str(e)}",
-            "type": "error",
-            "timestamp": datetime.now().isoformat(),
-            "visible": True,
-        }
-        st.session_state.toasters.insert(0, toaster)
+        error_msg = f"Invalid OpenAI API key: {str(e)}"
+        logger.error(f"❌ {error_msg}")
         return False
 
 
@@ -35,18 +28,8 @@ def parse_json_input(json_str: str) -> Dict[str, Any]:
     try:
         return json.loads(json_str)
     except json.JSONDecodeError as e:
-        # Add error to toasters
-        if "toasters" not in st.session_state:
-            st.session_state.toasters = []
-
-        toaster = {
-            "id": len(st.session_state.toasters),
-            "message": f"Invalid JSON format: {str(e)}",
-            "type": "error",
-            "timestamp": datetime.now().isoformat(),
-            "visible": True,
-        }
-        st.session_state.toasters.insert(0, toaster)
+        error_msg = f"Invalid JSON format: {str(e)}"
+        logger.error(f"❌ {error_msg}")
         return None
 
 
@@ -64,18 +47,8 @@ def extract_data_from_json(travel_data: dict, ticket_data: dict) -> tuple:
 
         return travel_approval, flight_reservations
     except Exception as e:
-        # Add error to toasters
-        if "toasters" not in st.session_state:
-            st.session_state.toasters = []
-
-        toaster = {
-            "id": len(st.session_state.toasters),
-            "message": f"Error extracting data from JSON: {str(e)}",
-            "type": "error",
-            "timestamp": datetime.now().isoformat(),
-            "visible": True,
-        }
-        st.session_state.toasters.insert(0, toaster)
+        error_msg = f"Error extracting data from JSON: {str(e)}"
+        logger.error(f"❌ {error_msg}")
         return None, None
 
 
@@ -108,30 +81,10 @@ def create_sample_data() -> tuple:
         return sample_travel_approval, sample_ticket_data
 
     except FileNotFoundError as e:
-        # Add error to toasters
-        if "toasters" not in st.session_state:
-            st.session_state.toasters = []
-
-        toaster = {
-            "id": len(st.session_state.toasters),
-            "message": f"Sample data file not found: {str(e)}",
-            "type": "error",
-            "timestamp": datetime.now().isoformat(),
-            "visible": True,
-        }
-        st.session_state.toasters.insert(0, toaster)
+        error_msg = f"Sample data file not found: {str(e)}"
+        logger.error(f"❌ {error_msg}")
         return None, None
     except json.JSONDecodeError as e:
-        # Add error to toasters
-        if "toasters" not in st.session_state:
-            st.session_state.toasters = []
-
-        toaster = {
-            "id": len(st.session_state.toasters),
-            "message": f"Error parsing sample data JSON: {str(e)}",
-            "type": "error",
-            "timestamp": datetime.now().isoformat(),
-            "visible": True,
-        }
-        st.session_state.toasters.insert(0, toaster)
+        error_msg = f"Error parsing sample data JSON: {str(e)}"
+        logger.error(f"❌ {error_msg}")
         return None, None
