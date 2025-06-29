@@ -1,7 +1,7 @@
 # ✈️ Travel Compliance Agent
 
 An AI-agent powered automation solution for auditing travel booking compliance
-<img src="images/bot.png" alt="An AI-agent powered automation solution for auditing travel booking compliance" width="300">
+<img src="images/bot_image.png" alt="An AI-agent powered automation solution for auditing travel booking compliance" width="300">
 
 ## 🎯 Project Overview
 
@@ -13,7 +13,7 @@ This system automatically audits travel bookings against three key compliance ru
 
 ### Application Flow Diagram
 
-![Travel Compliance Agent Architecture Diagram](images/flow-diagram.png)
+![Travel Compliance Agent Architecture Diagram](images/flow_diagram.png)
 
 The system follows a clear sequential flow from API key validation through compliance checking to report generation, with proper error handling at each stage.
 
