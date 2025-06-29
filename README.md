@@ -1,6 +1,7 @@
 # ✈️ Travel Compliance Agent
 
 An AI-agent powered automation solution for auditing travel booking compliance
+
 <img src="images/bot_image.png" alt="An AI-agent powered automation solution for auditing travel booking compliance" width="300">
 
 ## 🎯 Project Overview
