@@ -39,7 +39,7 @@ def _render_cost_section(model_name):
             f"""
             <div style='background-color: #f8f9fa; padding: 12px; border-radius: 8px; border-left: 4px solid #4CAF50; margin: 10px 0;'>
                 <div style='font-size: 14px; color: #555; margin-bottom: 4px;'>💰 Cost per 1M tokens</div>
-                <div style='font-size: 16px; font-weight: 500; color: #333;'>
+                <div style='font-size: 14px; font-weight: 500; color: #333;'>
                     Input: <span style='color: #2196F3;'>${pricing['input']:.2f}</span> • 
                     Cache: <span style='color: #4CAF50;'>${pricing['cache']:.3f}</span> • 
                     Output: <span style='color: #FF9800;'>${pricing['output']:.2f}</span>

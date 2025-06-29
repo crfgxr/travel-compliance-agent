@@ -1,5 +1,7 @@
 # ✈️ Travel Compliance Agent
 
+> **Version 0.3**
+
 An AI-agent powered automation solution for auditing travel booking compliance.
 
 ## 🌐 Live Demo

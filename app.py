@@ -14,6 +14,9 @@ from ui import (
     render_audit_failed,
 )
 
+# Version
+__version__ = "0.3"
+
 # Configure logging to show in terminal
 logging.basicConfig(
     level=logging.INFO,
@@ -38,10 +41,10 @@ st.set_page_config(
 
 
 def main():
-    logger.info("🚀 Starting Travel Compliance Agent")
+    logger.info(f"🚀 Starting Travel Compliance Agent v{__version__}")
 
     # Render header and sidebar
-    render_app_header()
+    render_app_header(__version__)
     render_sidebar()
 
     # Check API key validation
@@ -79,4 +82,4 @@ if __name__ == "__main__":
     main()
 
 
-# v0.2 refactored
+# v0.3

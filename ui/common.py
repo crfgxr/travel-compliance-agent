@@ -65,13 +65,20 @@ def reset_app_state():
     st.session_state.just_reset = True
 
 
-def render_app_header():
+def render_app_header(version: str = None):
     """Render the application header"""
+    version_html = (
+        f"<p style='font-size: 0.9em; margin-top: 0.5rem; opacity: 0.8;'>Version {version}</p>"
+        if version
+        else ""
+    )
+
     st.markdown(
-        """
+        f"""
     <div style="background: linear-gradient(90deg, #1f4e79, #2d5aa0); padding: 1rem; border-radius: 10px; color: white; text-align: center; margin-bottom: 2rem;">
         <h1>✈️ Travel Compliance Agent</h1>
         <p>Automated audit system for travel booking compliance</p>
+        {version_html}
     </div>
     """,
         unsafe_allow_html=True,
