@@ -73,6 +73,70 @@ cp .env.example .env
 streamlit run app.py
 ```
 
+## 🧪 Testing
+
+The project includes a comprehensive test suite covering all compliance rules with both PASS and FAIL scenarios.
+
+### **Prerequisites**
+
+```bash
+# Install pytest (included in requirements.txt)
+pip install pytest
+
+# Optional: Set OpenAI API key for AI-dependent tests
+export OPENAI_API_KEY="your-api-key-here"
+```
+
+### **Running Tests**
+
+```bash
+# Run all tests
+pytest tests/
+
+# Run with verbose output
+pytest tests/ -v
+
+# Run specific test categories
+pytest tests/test_compliance.py::TestTimingCompliance -v
+pytest tests/test_compliance.py::TestRouteCompliance -v
+
+# Run without API key (skips AI-dependent tests)
+pytest tests/ -v  # Will automatically skip LLM tests if no API key
+```
+
+### **Test Coverage**
+
+| Test Category           | Purpose                           |
+| ----------------------- | --------------------------------- |
+| **Structured Output**   | Validates AI agent configuration  |
+| **Timing Compliance**   | Tests flight timing rules         |
+| **Identity Compliance** | Tests passenger name matching     |
+| **Route Compliance**    | Tests airline route violations    |
+| **Integration Tests**   | Full compliance report generation |
+| **Data Validation**     | JSON structure compatibility      |
+
+### **Test Scenarios**
+
+- ✅ **PASS Scenarios**: Valid compliance cases
+- ❌ **FAIL Scenarios**: Violation detection
+- ⚠️ **Edge Cases**: System error handling
+- 🔧 **Integration**: End-to-end workflow testing
+
+### **Example Test Output**
+
+```bash
+$ pytest tests/ -v
+
+tests/test_compliance.py::TestTimingCompliance::test_valid_timing_compliance PASSED
+tests/test_compliance.py::TestTimingCompliance::test_departure_before_travel_period PASSED
+tests/test_compliance.py::TestRouteCompliance::test_invalid_route_compliance_sunexpress PASSED
+tests/test_compliance.py::TestDataStructures::test_data_structure_compatibility PASSED
+
+====== 12 passed, 3 skipped in 2.34s ======
+```
+
+_Tests automatically skip AI-dependent checks when OpenAI API key is not configured._
+
 ## 🔮 Possible Future Improvements
 
 The following improvements are planned to enhance the system's capabilities and production readiness:
