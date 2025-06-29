@@ -20,7 +20,7 @@ This system automatically audits travel bookings against three key compliance ru
 
 ### Application Flow Diagram
 
-![Travel Compliance Agent Architecture Diagram](flow-diagram.png)
+![Travel Compliance Agent Architecture Diagram](images/flow-diagram.png)
 
 The system follows a clear sequential flow from API key validation through compliance checking to report generation, with proper error handling at each stage.
 
@@ -32,6 +32,18 @@ The system follows a clear sequential flow from API key validation through compl
 - **UI**: Streamlit - Rapid web development with rich UI components and seamless Python integration
 - **Testing**: Pytest - Standard testing framework with comprehensive coverage
 - **Environment**: python-dotenv - Secure environment variable management
+
+## 🖥️ Work Examples
+
+The application provides an intuitive web interface for compliance auditing:
+
+**Input Interface:**
+![Input Example](images/input_example.png)
+
+**Output Results:**
+![Output Example](images/output_example.png)
+
+_The interface shows real-time compliance checking with detailed violation reports and technical details for transparency._
 
 ## 📦 Installation
 
