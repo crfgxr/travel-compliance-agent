@@ -104,7 +104,7 @@ used those models
 latest powerful: gpt-4.1-2025-04-14 https://platform.openai.com/docs/models/gpt-4.1
 price senstive reasoning model: o4-mini-2025-04-16 https://platform.openai.com/docs/models/o4-mini
 
-used https://raw.githubusercontent.com/Jonty/airline-route-data/refs/heads/main/airline_routes.json for checking airlines routes
+used amadeus airlines for checking airline routes for XQ (Sun Express) recent routes
 
 ## 📦 Installation
 

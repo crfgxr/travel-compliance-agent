@@ -1,0 +1,1245 @@
+{
+  "meta": {
+    "count": 65,
+    "links": {
+      "self": "https://test.api.amadeus.com/v1/airline/destinations?airlineCode=XQ"
+    }
+  },
+  "data": [
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "AALBORG",
+      "iataCode": "AAL",
+      "geoCode": {
+        "latitude": 57.09278,
+        "longitude": 9.84917
+      },
+      "address": {
+        "countryName": "DENMARK",
+        "countryCode": "DK",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ADANA",
+      "iataCode": "ADA",
+      "geoCode": {
+        "latitude": 36.98223,
+        "longitude": 35.28028
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "AMSTERDAM",
+      "iataCode": "AMS",
+      "geoCode": {
+        "latitude": 52.31028,
+        "longitude": 4.76028
+      },
+      "address": {
+        "countryName": "NETHERLANDS",
+        "countryCode": "NL",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ANKARA",
+      "iataCode": "ANK",
+      "geoCode": {
+        "latitude": 39.94973,
+        "longitude": 32.68862
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "KAYSERI",
+      "iataCode": "ASR",
+      "geoCode": {
+        "latitude": 38.77028,
+        "longitude": 35.49556
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ANTALYA",
+      "iataCode": "AYT",
+      "geoCode": {
+        "latitude": 36.89862,
+        "longitude": 30.80056
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "BERLIN",
+      "iataCode": "BER",
+      "geoCode": {
+        "latitude": 52.36223,
+        "longitude": 13.50167
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "BEIRUT",
+      "iataCode": "BEY",
+      "geoCode": {
+        "latitude": 33.82084,
+        "longitude": 35.48834
+      },
+      "address": {
+        "countryName": "LEBANON",
+        "countryCode": "LB",
+        "regionCode": "MEAST"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "BODRUM",
+      "iataCode": "BJV",
+      "geoCode": {
+        "latitude": 37.25056,
+        "longitude": 27.66445
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "BILLUND",
+      "iataCode": "BLL",
+      "geoCode": {
+        "latitude": 55.74028,
+        "longitude": 9.15167
+      },
+      "address": {
+        "countryName": "DENMARK",
+        "countryCode": "DK",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "BREMEN",
+      "iataCode": "BRE",
+      "geoCode": {
+        "latitude": 53.0475,
+        "longitude": 8.78667
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "BRUSSELS",
+      "iataCode": "BRU",
+      "geoCode": {
+        "latitude": 50.90139,
+        "longitude": 4.48445
+      },
+      "address": {
+        "countryName": "BELGIUM",
+        "countryCode": "BE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "BUDAPEST",
+      "iataCode": "BUD",
+      "geoCode": {
+        "latitude": 47.43695,
+        "longitude": 19.25556
+      },
+      "address": {
+        "countryName": "HUNGARY",
+        "countryCode": "HU",
+        "regionCode": "EEURO"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "COLOGNE/BONN",
+      "iataCode": "CGN",
+      "geoCode": {
+        "latitude": 50.87889,
+        "longitude": 7.12306
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "COPENHAGEN",
+      "iataCode": "CPH",
+      "geoCode": {
+        "latitude": 55.61806,
+        "longitude": 12.65584
+      },
+      "address": {
+        "countryName": "DENMARK",
+        "countryCode": "DK",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "DIYARBAKIR",
+      "iataCode": "DIY",
+      "geoCode": {
+        "latitude": 37.89389,
+        "longitude": 40.20112
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "DALAMAN",
+      "iataCode": "DLM",
+      "geoCode": {
+        "latitude": 36.71306,
+        "longitude": 28.7925
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "DORTMUND",
+      "iataCode": "DTM",
+      "geoCode": {
+        "latitude": 51.51834,
+        "longitude": 7.61223
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "DUBLIN",
+      "iataCode": "DUB",
+      "geoCode": {
+        "latitude": 53.42139,
+        "longitude": -6.27
+      },
+      "address": {
+        "countryName": "IRELAND",
+        "countryCode": "IE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+01:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "DUESSELDORF",
+      "iataCode": "DUS",
+      "geoCode": {
+        "latitude": 51.28056,
+        "longitude": 6.76723
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "BASEL MULHOUSE",
+      "iataCode": "EAP",
+      "geoCode": {
+        "latitude": 47.75,
+        "longitude": 7.33334
+      },
+      "address": {
+        "countryName": "FRANCE",
+        "countryCode": "FR",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ERBIL",
+      "iataCode": "EBL",
+      "geoCode": {
+        "latitude": 36.23001,
+        "longitude": 43.97
+      },
+      "address": {
+        "countryName": "IRAQ",
+        "countryCode": "IQ",
+        "regionCode": "MEAST"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "EINDHOVEN",
+      "iataCode": "EIN",
+      "geoCode": {
+        "latitude": 51.45028,
+        "longitude": 5.37445
+      },
+      "address": {
+        "countryName": "NETHERLANDS",
+        "countryCode": "NL",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ERZURUM",
+      "iataCode": "ERZ",
+      "geoCode": {
+        "latitude": 39.95639,
+        "longitude": 41.17028
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ESKISEHIR",
+      "iataCode": "ESK",
+      "geoCode": {
+        "latitude": 39.78417,
+        "longitude": 30.58223
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ELAZIG",
+      "iataCode": "EZS",
+      "geoCode": {
+        "latitude": 38.60417,
+        "longitude": 39.29584
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "MUENSTER/OSNABRUECK",
+      "iataCode": "FMO",
+      "geoCode": {
+        "latitude": 52.13473,
+        "longitude": 7.68473
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "FRANKFURT",
+      "iataCode": "FRA",
+      "geoCode": {
+        "latitude": 50.04056,
+        "longitude": 8.55612
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "GENEVA",
+      "iataCode": "GVA",
+      "geoCode": {
+        "latitude": 46.23806,
+        "longitude": 6.10889
+      },
+      "address": {
+        "countryName": "SWITZERLAND",
+        "countryCode": "CH",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "GAZIANTEP",
+      "iataCode": "GZT",
+      "geoCode": {
+        "latitude": 36.94723,
+        "longitude": 37.47862
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "HANNOVER",
+      "iataCode": "HAJ",
+      "geoCode": {
+        "latitude": 52.45945,
+        "longitude": 9.69278
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "HAMBURG",
+      "iataCode": "HAM",
+      "geoCode": {
+        "latitude": 53.63028,
+        "longitude": 9.98834
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "HELSINKI",
+      "iataCode": "HEL",
+      "geoCode": {
+        "latitude": 60.31723,
+        "longitude": 24.96334
+      },
+      "address": {
+        "countryName": "FINLAND",
+        "countryCode": "FI",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "HATAY",
+      "iataCode": "HTY",
+      "geoCode": {
+        "latitude": 36.36195,
+        "longitude": 36.28334
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "IZMIR",
+      "iataCode": "IZM",
+      "geoCode": {
+        "latitude": 38.41278,
+        "longitude": 27.13834
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "KARS",
+      "iataCode": "KSY",
+      "geoCode": {
+        "latitude": 40.56223,
+        "longitude": 43.115
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "KATOWICE",
+      "iataCode": "KTW",
+      "geoCode": {
+        "latitude": 50.47417,
+        "longitude": 19.08
+      },
+      "address": {
+        "countryName": "POLAND",
+        "countryCode": "PL",
+        "regionCode": "EEURO"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "KONYA",
+      "iataCode": "KYA",
+      "geoCode": {
+        "latitude": 37.97889,
+        "longitude": 32.56195
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ST PETERSBURG",
+      "iataCode": "LED",
+      "geoCode": {
+        "latitude": 59.80028,
+        "longitude": 30.2625
+      },
+      "address": {
+        "countryName": "RUSSIA",
+        "countryCode": "RU",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "LEIPZIG/HALLE",
+      "iataCode": "LEJ",
+      "geoCode": {
+        "latitude": 51.42139,
+        "longitude": 12.22195
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "LJUBLJANA",
+      "iataCode": "LJU",
+      "geoCode": {
+        "latitude": 46.22362,
+        "longitude": 14.4575
+      },
+      "address": {
+        "countryName": "SLOVENIA",
+        "countryCode": "SI",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "LONDON",
+      "iataCode": "LON",
+      "geoCode": {
+        "latitude": 51.5,
+        "longitude": -0.16666
+      },
+      "address": {
+        "countryName": "UNITED KINGDOM",
+        "countryCode": "GB",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+01:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "LYON",
+      "iataCode": "LYS",
+      "geoCode": {
+        "latitude": 45.72639,
+        "longitude": 5.09084
+      },
+      "address": {
+        "countryName": "FRANCE",
+        "countryCode": "FR",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "MANCHESTER",
+      "iataCode": "MAN",
+      "geoCode": {
+        "latitude": 53.35362,
+        "longitude": -2.275
+      },
+      "address": {
+        "countryName": "UNITED KINGDOM",
+        "countryCode": "GB",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+01:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "MALATYA",
+      "iataCode": "MLX",
+      "geoCode": {
+        "latitude": 38.43528,
+        "longitude": 38.09112
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "MARDIN",
+      "iataCode": "MQM",
+      "geoCode": {
+        "latitude": 37.22334,
+        "longitude": 40.63195
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "MUNICH",
+      "iataCode": "MUC",
+      "geoCode": {
+        "latitude": 48.35389,
+        "longitude": 11.78612
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "NUREMBERG",
+      "iataCode": "NUE",
+      "geoCode": {
+        "latitude": 49.49584,
+        "longitude": 11.07584
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ZONGULDAK",
+      "iataCode": "ONQ",
+      "geoCode": {
+        "latitude": 41.52,
+        "longitude": 32.1
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "OSLO",
+      "iataCode": "OSL",
+      "geoCode": {
+        "latitude": 60.19389,
+        "longitude": 11.10028
+      },
+      "address": {
+        "countryName": "NORWAY",
+        "countryCode": "NO",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "PARIS",
+      "iataCode": "PAR",
+      "geoCode": {
+        "latitude": 48.85334,
+        "longitude": 2.34889
+      },
+      "address": {
+        "countryName": "FRANCE",
+        "countryCode": "FR",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "PRAGUE",
+      "iataCode": "PRG",
+      "geoCode": {
+        "latitude": 50.10084,
+        "longitude": 14.26
+      },
+      "address": {
+        "countryName": "CZECHIA",
+        "countryCode": "CZ",
+        "regionCode": "EEURO"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "SAARBRUECKEN",
+      "iataCode": "SCN",
+      "geoCode": {
+        "latitude": 49.21445,
+        "longitude": 7.10945
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "SKOPJE",
+      "iataCode": "SKP",
+      "geoCode": {
+        "latitude": 41.96167,
+        "longitude": 21.62139
+      },
+      "address": {
+        "countryName": "NORTH MACEDONIA",
+        "countryCode": "MK",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "SOFIA",
+      "iataCode": "SOF",
+      "geoCode": {
+        "latitude": 42.69528,
+        "longitude": 23.40612
+      },
+      "address": {
+        "countryName": "BULGARIA",
+        "countryCode": "BG",
+        "regionCode": "EEURO"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "STOCKHOLM",
+      "iataCode": "STO",
+      "geoCode": {
+        "latitude": 59.33001,
+        "longitude": 18.08
+      },
+      "address": {
+        "countryName": "SWEDEN",
+        "countryCode": "SE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "STUTTGART",
+      "iataCode": "STR",
+      "geoCode": {
+        "latitude": 48.69028,
+        "longitude": 9.19528
+      },
+      "address": {
+        "countryName": "GERMANY",
+        "countryCode": "DE",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "SAMSUN",
+      "iataCode": "SZF",
+      "geoCode": {
+        "latitude": 41.25834,
+        "longitude": 36.55612
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "TEHRAN",
+      "iataCode": "THR",
+      "geoCode": {
+        "latitude": 35.68917,
+        "longitude": 51.31334
+      },
+      "address": {
+        "countryName": "IRAN",
+        "countryCode": "IR",
+        "regionCode": "MEAST"
+      },
+      "timeZone": {
+        "offSet": "+03:30",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "TEL AVIV YAFO",
+      "iataCode": "TLV",
+      "geoCode": {
+        "latitude": 32.01139,
+        "longitude": 34.88667
+      },
+      "address": {
+        "countryName": "ISRAEL",
+        "countryCode": "IL",
+        "regionCode": "MEAST"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "TRABZON",
+      "iataCode": "TZX",
+      "geoCode": {
+        "latitude": 40.995,
+        "longitude": 39.78973
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "VAN",
+      "iataCode": "VAN",
+      "geoCode": {
+        "latitude": 38.46834,
+        "longitude": 43.33223
+      },
+      "address": {
+        "countryName": "TURKIYE",
+        "countryCode": "TR",
+        "regionCode": "EURAS"
+      },
+      "timeZone": {
+        "offSet": "+03:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "VIENNA",
+      "iataCode": "VIE",
+      "geoCode": {
+        "latitude": 48.12223,
+        "longitude": 16.5575
+      },
+      "address": {
+        "countryName": "AUSTRIA",
+        "countryCode": "AT",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "WARSAW",
+      "iataCode": "WAW",
+      "geoCode": {
+        "latitude": 52.16584,
+        "longitude": 20.96723
+      },
+      "address": {
+        "countryName": "POLAND",
+        "countryCode": "PL",
+        "regionCode": "EEURO"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    },
+    {
+      "type": "location",
+      "subtype": "city",
+      "name": "ZURICH",
+      "iataCode": "ZRH",
+      "geoCode": {
+        "latitude": 47.45278,
+        "longitude": 8.56056
+      },
+      "address": {
+        "countryName": "SWITZERLAND",
+        "countryCode": "CH",
+        "regionCode": "EUROP"
+      },
+      "timeZone": {
+        "offSet": "+02:00",
+        "referenceLocalDateTime": "2025-06-29T10:28:47"
+      }
+    }
+  ]
+}
