@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 import json
 
 # =============================================================================
-# SIMPLIFIED PYDANTIC MODELS
+# PYDANTIC MODELS
 # =============================================================================
 
 
@@ -32,7 +32,7 @@ class TimingComplianceResult(BaseModel):
 
 
 # =============================================================================
-# SIMPLIFIED RULES
+# RULES
 # =============================================================================
 
 TIMING_RULE = "Flight departures and arrivals must occur within the approved travel period (travelBeginDate to travelEndDate, inclusive)"

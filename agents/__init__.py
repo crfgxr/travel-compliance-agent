@@ -10,9 +10,8 @@ from .timing_agent import (
 )
 from .identity_agent import (
     IdentityAgent,
-    PASSENGER_IDENTITY_RULES,
-    PASSENGER_IDENTITY_RULE_CONFIG,
-    get_passenger_identity_prompt,
+    IDENTITY_RULE,
+    get_identity_prompt,
 )
 from .route_agent import (
     RouteAgent,
@@ -33,9 +32,8 @@ __all__ = [
     "TIMING_RULE",
     "get_timing_prompt",
     # Identity compliance
-    "PASSENGER_IDENTITY_RULES",
-    "PASSENGER_IDENTITY_RULE_CONFIG",
-    "get_passenger_identity_prompt",
+    "IDENTITY_RULE",
+    "get_identity_prompt",
     # Route compliance
     "ROUTE_COMPLIANCE_RULES",
     "ROUTE_COMPLIANCE_RULE_CONFIG",

@@ -4,7 +4,7 @@ import json
 import logging
 from utils import validate_openai_key, get_openai_key_from_env, is_api_key_available
 from .common import show_notification, create_sample_data
-from .modelselect import render_model_select
+from .model_selection import render_model_select
 
 logger = logging.getLogger(__name__)
 
