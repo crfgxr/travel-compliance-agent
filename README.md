@@ -17,6 +17,28 @@ This system automatically audits travel bookings against three key compliance ru
 
 The system follows a clear sequential flow from API key validation through compliance checking to report generation, with proper error handling at each stage.
 
+## 🤖 AI Agents
+
+The system uses three specialized agents to check different compliance rules:
+
+### **TimingAgent** ⏰
+
+- **Checks**: Flight times are within approved travel dates
+- **Rule**: Departures and arrivals must fall between travel start and end dates
+
+### **IdentityAgent** 👤
+
+- **Checks**: Passenger names match between approval and booking
+- **Rule**: Names must be exactly the same (case-insensitive)
+
+### **RouteAgent** ✈️
+
+- **Checks**: SunExpress was used when available for the route
+- **Rule**: Use SunExpress when it serves both departure and arrival airports
+- **Data**: Uses real Amadeus airline route data from JSON files
+
+All agents work together through an orchestrator to generate a complete compliance report.
+
 ## 🚀 Tech Stack
 
 - **AI Model**: OpenAI reasoning models - Complex compliance rule interpretation
