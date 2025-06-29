@@ -33,7 +33,6 @@ def _render_api_key_section():
                     st.session_state.api_key_validated = True
                     st.session_state.openai_api_key = env_key
                     st.session_state.env_key_checked = True
-                    os.environ["OPENAI_API_KEY"] = env_key
                     logger.info(
                         "✅ OpenAI API key loaded from environment and validated"
                     )
@@ -95,7 +94,6 @@ def _render_api_key_input():
                     if "api_key_validation_error" in st.session_state:
                         del st.session_state.api_key_validation_error
                     show_notification("API Key validated successfully!", "success")
-                    os.environ["OPENAI_API_KEY"] = api_key
                     logger.info("✅ OpenAI API key validated successfully")
                     st.rerun()  # Refresh to hide the input field
                 else:

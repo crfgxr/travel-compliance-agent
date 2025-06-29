@@ -15,7 +15,7 @@ from ui import (
 )
 
 # Version
-__version__ = "0.3"
+__version__ = "0.4"
 
 # Configure logging to show in terminal
 logging.basicConfig(
