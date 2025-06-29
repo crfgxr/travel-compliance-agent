@@ -4,6 +4,7 @@ import json
 import logging
 from utils import validate_openai_key, get_openai_key_from_env, is_api_key_available
 from .common import show_notification, create_sample_data
+from .modelselect import render_model_select
 
 logger = logging.getLogger(__name__)
 
@@ -130,15 +131,7 @@ def _render_validated_api_key():
         st.success("✅ API Key validated successfully!")
 
     # Model selection (only show when API key is validated)
-    model_name = st.selectbox(
-        "AI Model",
-        options=["gpt-4.1-mini-2025-04-14", "gpt-4.1-2025-04-14"],
-        index=0,
-        help="Select the AI model for compliance checking",
-    )
-    # Store selected model in session state
-    st.session_state.selected_model = model_name
-    logger.info(f"🤖 Using model: {model_name}")
+    render_model_select()
 
 
 def _render_data_controls():
