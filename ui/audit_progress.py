@@ -21,8 +21,20 @@ def render_audit_progress():
         _render_results_inline(st.session_state.audit_report)
         return
 
+    # Log current session state for debugging deployment issues
+    logger.info(
+        f"🔍 Audit progress state - running_audit: {st.session_state.get('running_audit', False)}"
+    )
+    logger.info(
+        f"🔍 Button clicked flag: {st.session_state.get('_audit_button_clicked', False)}"
+    )
+
     travel_approval_input = st.session_state.get("travel_input_data", "")
     ticket_data_input = st.session_state.get("ticket_input_data", "")
+
+    logger.info(
+        f"🔍 Data available - Travel: {len(travel_approval_input)}, Ticket: {len(ticket_data_input)}"
+    )
 
     if travel_approval_input and ticket_data_input:
         logger.info("🚀 Starting compliance audit...")
@@ -58,6 +70,11 @@ def render_audit_progress():
             st.session_state.loading_sample = False
             st.session_state.audit_failed = True
             st.session_state.json_errors = json_errors
+
+            # Clear the button clicked flag since audit failed
+            if "_audit_button_clicked" in st.session_state:
+                del st.session_state._audit_button_clicked
+
             st.rerun()
         elif travel_data and ticket_data:
             logger.info("📊 Extracting data for LLM processing...")
@@ -128,6 +145,10 @@ def render_audit_progress():
                 st.session_state.audit_completed = True
                 st.session_state.loading_sample = False
 
+                # Clear the button clicked flag since audit is complete
+                if "_audit_button_clicked" in st.session_state:
+                    del st.session_state._audit_button_clicked
+
                 logger.info("✅ Compliance audit completed and results displayed")
 
                 # Trigger a controlled rerun to update sidebar state
@@ -139,6 +160,10 @@ def render_audit_progress():
         logger.error("❌ Missing travel approval or ticket data")
         st.session_state.running_audit = False
         st.session_state.loading_sample = False
+
+        # Clear the button clicked flag since no data available
+        if "_audit_button_clicked" in st.session_state:
+            del st.session_state._audit_button_clicked
 
 
 def _render_results_inline(report):

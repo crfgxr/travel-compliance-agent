@@ -1,4 +1,7 @@
 import streamlit as st
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def render_input_form():
@@ -64,8 +67,31 @@ def render_input_form():
             disabled=either_input_empty,
         ):
             if travel_approval_input and ticket_data_input:
+                logger.info("🚀 Button clicked - Starting audit process...")
+
+                # Set multiple session state variables with explicit logging
                 st.session_state.running_audit = True
-                st.session_state.audit_completed = False  # Reset completion flag
+                st.session_state.audit_completed = False
                 st.session_state.travel_input_data = travel_approval_input
                 st.session_state.ticket_input_data = ticket_data_input
+
+                # Clear any previous audit state to ensure clean transition
+                if "audit_report" in st.session_state:
+                    del st.session_state.audit_report
+                if "audit_failed" in st.session_state:
+                    del st.session_state.audit_failed
+                if "json_errors" in st.session_state:
+                    del st.session_state.json_errors
+
+                # Add a flag to ensure we show progress UI
+                st.session_state._audit_button_clicked = True
+
+                logger.info(
+                    f"✅ Session state updated - running_audit: {st.session_state.running_audit}"
+                )
+                logger.info(
+                    f"📊 Data lengths - Travel: {len(travel_approval_input)}, Ticket: {len(ticket_data_input)}"
+                )
+
+                # Force rerun with explicit state validation
                 st.rerun()
