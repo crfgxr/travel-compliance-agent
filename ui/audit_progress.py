@@ -83,12 +83,13 @@ def render_audit_progress():
                     model_name = st.session_state.get(
                         "selected_model", "gpt-4.1-2025-04-14"
                     )
-                    llm = create_llm_client(
+
+                    # Create ComplianceAgent with proper parameters
+                    compliance_agent = ComplianceAgent(
                         model=model_name,
                         temperature=0,
                         openai_api_key=st.session_state.get("openai_api_key"),
                     )
-                    compliance_agent = ComplianceAgent(llm)
 
                     # Generate compliance report with progress tracking
                     report = compliance_agent.generate_compliance_report(

@@ -1,11 +1,6 @@
-from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 from typing import Dict, Any, List
 import json
-import logging
-
-# Setup logger
-logger = logging.getLogger(__name__)
 
 # =============================================================================
 # TIMING COMPLIANCE RULES
@@ -26,15 +21,6 @@ TIMING_RULE_CONFIG = {
         "departure_too_late",
         "arrival_too_early",
     ],
-}
-
-TIMING_VIOLATION_TEMPLATE = {
-    "flight_number": "flight number (e.g., XQ141)",
-    "reason": "Clear explanation of why this violates the rule",
-    "departure_date": "actual departure date/time",
-    "arrival_date": "actual arrival date/time",
-    "approved_period": "approved travel period dates",
-    "issue_type": "departure_too_early|arrival_too_late|departure_too_late|arrival_too_early",
 }
 
 
@@ -102,7 +88,7 @@ Important:
 
 
 class TimingAgent:
-    def __init__(self, llm: ChatOpenAI):
+    def __init__(self, llm):
         self.llm = llm
 
     def check_timing_compliance(

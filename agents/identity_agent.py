@@ -1,4 +1,3 @@
-from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 from typing import Dict, Any, List
 import json
@@ -26,16 +25,6 @@ PASSENGER_IDENTITY_RULE_CONFIG = {
         "unauthorized_passenger",
         "missing_approval",
     ],
-}
-
-PASSENGER_IDENTITY_VIOLATION_TEMPLATE = {
-    "passenger_name": "passenger name from ticket",
-    "reason": "Clear explanation of why this passenger is not compliant",
-    "ticket_employee_id": "employee ID from flight ticket",
-    "approved_employee_id": "employee ID from travel approval (if exists)",
-    "booking_reference": "booking ID or confirmation number",
-    "issue_type": "name_mismatch|employee_id_mismatch|unauthorized_passenger|missing_approval",
-    "expected_name": "correct name from approval (if applicable)",
 }
 
 
@@ -93,7 +82,7 @@ Important:
 
 
 class IdentityAgent:
-    def __init__(self, llm: ChatOpenAI):
+    def __init__(self, llm):
         self.llm = llm
 
     def check_passenger_identity(

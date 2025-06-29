@@ -2,14 +2,15 @@ import pytest
 import json
 from datetime import datetime
 from src.models import *
-from src.agents import ComplianceAgent, OpenAIResponsesClient
+from agents import ComplianceAgent, OpenAIResponsesClient
 
 
 @pytest.fixture
 def compliance_agent():
     """Create a compliance agent for testing"""
-    llm = OpenAIResponsesClient(model="gpt-4o-mini", temperature=0)
-    return ComplianceAgent(llm)
+    return ComplianceAgent(
+        model="gpt-4o-mini", temperature=0, openai_api_key="test-key-for-testing"
+    )
 
 
 @pytest.fixture

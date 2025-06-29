@@ -1,5 +1,6 @@
 from langchain_openai import ChatOpenAI
 from typing import Dict, Any, List
+import json
 import logging
 
 from .timing_agent import TimingAgent
@@ -10,14 +11,82 @@ from .route_agent import RouteAgent
 logger = logging.getLogger(__name__)
 
 
-class ComplianceAgent:
-    def __init__(self, llm: ChatOpenAI):
-        self.llm = llm
+# =============================================================================
+# LLM CLIENT CREATION (moved from shared_utils)
+# =============================================================================
 
-        # Initialize individual agents
-        self.timing_agent = TimingAgent(llm)
-        self.identity_agent = IdentityAgent(llm)
-        self.route_agent = RouteAgent(llm)
+
+def create_llm_client(
+    model: str,
+    temperature: float = 0,
+    openai_api_key: str = None,
+) -> ChatOpenAI:
+    """Create and return a ChatOpenAI instance"""
+    # Handle empty model string by providing a default
+    if not model or model.strip() == "":
+        model = "gpt-4o-mini"  # dummy string added real model will pass from UI
+
+    return ChatOpenAI(
+        model=model,
+        temperature=temperature,
+        openai_api_key=openai_api_key,
+    )
+
+
+# For backward compatibility, create an alias
+OpenAIResponsesClient = create_llm_client
+
+
+# =============================================================================
+# RULE METADATA SYSTEM (moved from shared_utils)
+# =============================================================================
+
+ALL_RULES = {}
+
+
+def get_all_rule_names() -> List[str]:
+    """Get list of all rule names"""
+    return [rule_data["config"]["rule_name"] for rule_data in ALL_RULES.values()]
+
+
+def add_new_rule_type(rule_key: str, config: Dict, rules: List[str], prompt_function):
+    """
+    Add a new rule type to the system
+
+    Args:
+        rule_key: Unique identifier for the rule type
+        config: Rule configuration dictionary
+        rules: List of rule descriptions
+        prompt_function: Function that generates prompts for this rule type
+    """
+    ALL_RULES[rule_key] = {
+        "config": config,
+        "rules": rules,
+        "prompt_function": prompt_function,
+    }
+
+
+# =============================================================================
+# COMPLIANCE ORCHESTRATOR
+# =============================================================================
+
+
+class ComplianceAgent:
+    def __init__(
+        self,
+        model: str = "gpt-4o-mini",  # dummy string added real model will pass from UI
+        temperature: float = 0,
+        openai_api_key: str = None,
+    ):
+        # Create a single LLM instance using local create_llm_client function
+        self.llm = create_llm_client(
+            model=model, temperature=temperature, openai_api_key=openai_api_key
+        )
+
+        # Initialize individual agents with the shared LLM instance
+        self.timing_agent = TimingAgent(self.llm)
+        self.identity_agent = IdentityAgent(self.llm)
+        self.route_agent = RouteAgent(self.llm)
 
     def check_timing_compliance(
         self,

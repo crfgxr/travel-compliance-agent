@@ -1,6 +1,6 @@
 # Backward compatibility - expose the main class
 from .orchestrator import ComplianceAgent
-from .shared_utils import (
+from .orchestrator import (
     create_llm_client,
     OpenAIResponsesClient,
     ALL_RULES,
@@ -63,7 +63,7 @@ __all__ = [
 
 
 # Initialize the ALL_RULES dictionary with all rule types for backward compatibility
-from .shared_utils import add_new_rule_type
+from .orchestrator import add_new_rule_type
 from .timing_agent import TIMING_RULES, TIMING_RULE_CONFIG, get_timing_compliance_prompt
 from .identity_agent import (
     PASSENGER_IDENTITY_RULES,

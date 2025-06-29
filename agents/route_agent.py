@@ -1,5 +1,3 @@
-from langchain_openai import ChatOpenAI
-from langchain.schema import HumanMessage, SystemMessage
 from typing import Dict, Any, List
 import json
 import logging
@@ -27,19 +25,6 @@ ROUTE_COMPLIANCE_RULE_CONFIG = {
     "sunexpress_airline_code": "XQ",
     "sunexpress_airline_name": "SunExpress",
     "route_data_source": "https://raw.githubusercontent.com/Jonty/airline-route-data/refs/heads/main/airline_routes.json",
-}
-
-ROUTE_COMPLIANCE_VIOLATION_TEMPLATE = {
-    "flight_number": "flight number (e.g., TK123)",
-    "reason": "Clear explanation of why this flight violates the SunExpress route policy",
-    "actual_airline": "airline code that was used",
-    "actual_airline_name": "full airline name that was used",
-    "route": "departure airport -> arrival airport (e.g., IST -> FRA)",
-    "travel_date": "date when travel occurred",
-    "booking_reference": "booking ID or confirmation number",
-    "sunexpress_availability": "confirmation that SunExpress serves both airports",
-    "route_details": "details about SunExpress airport coverage",
-    "policy_rule": "SunExpress route availability violation",
 }
 
 
@@ -398,7 +383,7 @@ Important:
 
 
 class RouteAgent:
-    def __init__(self, llm: ChatOpenAI):
+    def __init__(self, llm):
         self.llm = llm
 
     def check_route_compliance(
