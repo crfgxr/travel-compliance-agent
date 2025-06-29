@@ -1,8 +1,9 @@
 import streamlit as st
 import logging
+import time
 from agents import ComplianceAgent
 from utils import parse_json_input, extract_data_from_json
-from .common import show_notification, format_compliance_result, is_cloud_deployment
+from .common import show_notification, format_compliance_result
 
 logger = logging.getLogger(__name__)
 
@@ -20,37 +21,11 @@ def render_audit_progress():
         _render_results_inline(st.session_state.audit_report)
         return
 
-    # Ensure we're actually supposed to be running an audit
-    if not st.session_state.get("running_audit", False):
-        st.error(
-            "❌ Audit state inconsistency detected. Please try starting the audit again."
-        )
-        logger.error("❌ render_audit_progress called but running_audit is False")
-        return
-
-    # Cloud-optimized data access: Use atomic audit_request first, fall back to individual keys
-    audit_request = st.session_state.get("audit_request", {})
-
-    if audit_request and audit_request.get("status") == "initiated":
-        # Use data from atomic request
-        travel_approval_input = audit_request.get("travel_input_data", "")
-        ticket_data_input = audit_request.get("ticket_input_data", "")
-        logger.info(
-            f"🚀 Using atomic audit request from timestamp: {audit_request.get('timestamp', 'unknown')}"
-        )
-    else:
-        # Fallback to individual session state keys (for backward compatibility)
-        travel_approval_input = st.session_state.get("travel_input_data", "")
-        ticket_data_input = st.session_state.get("ticket_input_data", "")
-        if travel_approval_input and ticket_data_input:
-            logger.info("🚀 Using fallback individual session state keys")
+    travel_approval_input = st.session_state.get("travel_input_data", "")
+    ticket_data_input = st.session_state.get("ticket_input_data", "")
 
     if travel_approval_input and ticket_data_input:
         logger.info("🚀 Starting compliance audit...")
-
-        # Clean up any retry counter from previous failed attempts
-        if "audit_data_retry_count" in st.session_state:
-            del st.session_state.audit_data_retry_count
 
         # Show progress UI immediately - NOT inside a spinner
         st.subheader("🔄 Running Compliance Audit")
@@ -60,6 +35,9 @@ def render_audit_progress():
 
         # Initial status
         status_text.text("Initializing audit...")
+
+        # Small delay to ensure UI renders before processing starts
+        time.sleep(0.1)
 
         # Parse JSON data
         travel_data = parse_json_input(travel_approval_input)
@@ -80,9 +58,6 @@ def render_audit_progress():
             st.session_state.loading_sample = False
             st.session_state.audit_failed = True
             st.session_state.json_errors = json_errors
-            # Clean up atomic request
-            if "audit_request" in st.session_state:
-                del st.session_state.audit_request
             st.rerun()
         elif travel_data and ticket_data:
             logger.info("📊 Extracting data for LLM processing...")
@@ -153,72 +128,17 @@ def render_audit_progress():
                 st.session_state.audit_completed = True
                 st.session_state.loading_sample = False
 
-                # Clean up atomic request
-                if "audit_request" in st.session_state:
-                    del st.session_state.audit_request
-
                 logger.info("✅ Compliance audit completed and results displayed")
 
                 # Trigger a controlled rerun to update sidebar state
                 st.rerun()
     else:
-        # Enhanced cloud-specific retry logic
-        st.subheader("🔄 Preparing Audit Data...")
-
-        # Initialize retry counter if not exists
-        if "audit_data_retry_count" not in st.session_state:
-            st.session_state.audit_data_retry_count = 0
-
-        retry_count = st.session_state.audit_data_retry_count
-        cloud_env = is_cloud_deployment()
-        max_retries = 5 if cloud_env else 2  # More retries for cloud
-
-        # More aggressive retry for cloud environments
-        if retry_count < max_retries:
-            if retry_count == 0:
-                message = "⏳ Initializing audit..." + (
-                    " (cloud environment detected)" if cloud_env else ""
-                )
-                st.info(message)
-            elif retry_count < 3:
-                message = f"⏳ Synchronizing session state... (attempt {retry_count + 1}/{max_retries})"
-                if cloud_env:
-                    message += " - Cloud latency compensation active"
-                st.info(message)
-            else:
-                message = f"⏳ Handling cloud deployment latency... (attempt {retry_count + 1}/{max_retries})"
-                st.warning(message)
-
-            st.session_state.audit_data_retry_count += 1
-            st.rerun()
-        else:
-            # After multiple cloud-optimized retries, this is a real issue
-            if cloud_env:
-                st.error(
-                    "❌ **Cloud Deployment Issue**: Session state synchronization failed."
-                )
-                st.info("💡 **Troubleshooting Steps:**")
-                st.info("1. Wait a moment and try clicking 'Run Audit' again")
-                st.info("2. Refresh the page and reload your data")
-                st.info("3. Check your internet connection stability")
-                st.info("4. If the issue persists, try using a different browser")
-            else:
-                st.error("❌ **Data Access Issue**: Unable to access audit data.")
-
-            show_notification(
-                "Session synchronization failed. Please try again."
-                + (" (Cloud deployment)" if cloud_env else ""),
-                "error",
-            )
-            logger.error(
-                f"❌ Missing travel/ticket data after {max_retries} retries (cloud: {cloud_env})"
-            )
-            st.session_state.running_audit = False
-            st.session_state.loading_sample = False
-            # Clean up
-            for key in ["audit_data_retry_count", "audit_request"]:
-                if key in st.session_state:
-                    del st.session_state[key]
+        show_notification(
+            "Please provide both travel approval and ticket data.", "error"
+        )
+        logger.error("❌ Missing travel approval or ticket data")
+        st.session_state.running_audit = False
+        st.session_state.loading_sample = False
 
 
 def _render_results_inline(report):

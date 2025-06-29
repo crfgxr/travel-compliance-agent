@@ -64,28 +64,8 @@ def render_input_form():
             disabled=either_input_empty,
         ):
             if travel_approval_input and ticket_data_input:
-                # Cloud-optimized: Set all audit data atomically in a single session state variable
-                # This prevents race conditions in cloud deployments where individual session state
-                # updates might not be immediately consistent
-                import time
-
-                audit_request = {
-                    "travel_input_data": travel_approval_input,
-                    "ticket_input_data": ticket_data_input,
-                    "timestamp": time.time(),  # Add timestamp for debugging
-                    "status": "initiated",
-                }
-                st.session_state.audit_request = audit_request
                 st.session_state.running_audit = True
                 st.session_state.audit_completed = False  # Reset completion flag
-
-                # Clear any previous retry state
-                for key in [
-                    "audit_data_retry_count",
-                    "travel_input_data",
-                    "ticket_input_data",
-                ]:
-                    if key in st.session_state:
-                        del st.session_state[key]
-
+                st.session_state.travel_input_data = travel_approval_input
+                st.session_state.ticket_input_data = ticket_data_input
                 st.rerun()
