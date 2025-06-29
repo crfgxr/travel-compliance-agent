@@ -21,20 +21,20 @@ The system follows a clear sequential flow from API key validation through compl
 
 The system uses three specialized agents to check different compliance rules:
 
-### **TimingAgent** ⏰
+#### **Timing Agent** ⏰
 
 - **Checks**: Flight times are within approved travel dates
 - **Rule**: Departures and arrivals must fall between travel start and end dates
 
-### **IdentityAgent** 👤
+#### **Identity Agent** 👤
 
 - **Checks**: Passenger names match between approval and booking
 - **Rule**: Names must be exactly the same (case-insensitive)
 
-### **RouteAgent** ✈️
+#### **Route Agent** ✈️
 
-- **Checks**: SunExpress was used when available for the route
-- **Rule**: Use SunExpress when it serves both departure and arrival airports
+- **Checks**: Preferred airline was used when available for the route
+- **Rule**: Use preferred airline when it serves both departure and arrival airports
 - **Data**: Uses real Amadeus airline route data from JSON files
 
 All agents work together through an orchestrator to generate a complete compliance report.
