@@ -20,11 +20,23 @@ def render_audit_progress():
         _render_results_inline(st.session_state.audit_report)
         return
 
+    # Ensure we're actually supposed to be running an audit
+    if not st.session_state.get("running_audit", False):
+        st.error(
+            "❌ Audit state inconsistency detected. Please try starting the audit again."
+        )
+        logger.error("❌ render_audit_progress called but running_audit is False")
+        return
+
     travel_approval_input = st.session_state.get("travel_input_data", "")
     ticket_data_input = st.session_state.get("ticket_input_data", "")
 
     if travel_approval_input and ticket_data_input:
         logger.info("🚀 Starting compliance audit...")
+
+        # Clean up any retry counter from previous failed attempts
+        if "audit_data_retry_count" in st.session_state:
+            del st.session_state.audit_data_retry_count
 
         # Show progress UI immediately - NOT inside a spinner
         st.subheader("🔄 Running Compliance Audit")
@@ -129,12 +141,34 @@ def render_audit_progress():
                 # Trigger a controlled rerun to update sidebar state
                 st.rerun()
     else:
-        show_notification(
-            "Please provide both travel approval and ticket data.", "error"
-        )
-        logger.error("❌ Missing travel approval or ticket data")
-        st.session_state.running_audit = False
-        st.session_state.loading_sample = False
+        # Handle missing data more gracefully to prevent race conditions
+        # Don't immediately clear running_audit - this might be a transient Streamlit session state issue
+
+        # Show a loading state and attempt to recover
+        st.subheader("🔄 Preparing Audit Data...")
+
+        # Initialize retry counter if not exists
+        if "audit_data_retry_count" not in st.session_state:
+            st.session_state.audit_data_retry_count = 0
+
+        # If this is our first few attempts, try to recover gracefully
+        if st.session_state.audit_data_retry_count < 2:
+            st.info("⏳ Loading audit data, please wait...")
+            st.session_state.audit_data_retry_count += 1
+            # Give Streamlit a chance to stabilize session state by triggering a rerun
+            st.rerun()
+        else:
+            # After retries, this is likely a real data issue
+            show_notification(
+                "Unable to load audit data. Please try starting the audit again.",
+                "error",
+            )
+            logger.error("❌ Missing travel approval or ticket data after retries")
+            st.session_state.running_audit = False
+            st.session_state.loading_sample = False
+            # Clean up retry counter
+            if "audit_data_retry_count" in st.session_state:
+                del st.session_state.audit_data_retry_count
 
 
 def _render_results_inline(report):
