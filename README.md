@@ -4,9 +4,9 @@ An AI-agent powered automation solution for auditing travel booking compliance
 
 ![Agent Image](images/agent_image.png)
 
-## 🎯 Project Overview
+## 🎯 Application Overview
 
-This system automatically audits travel bookings against three key compliance rules:
+This application automatically audits travel bookings against three key compliance rules:
 
 1. **Flight Ticket Timing** - Ensures departure and arrival times fall within approved travel periods
 2. **Passenger Identity** - Validates passenger name consistency between approvals and reservations
