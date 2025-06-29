@@ -25,36 +25,23 @@ def show_notification(message: str, type: str = "info"):
 
 
 def get_app_state():
-    """Determine current application state with better validation"""
-    # Check for reset state first
+    """Determine current application state"""
     if st.session_state.get("just_reset", False):
         return "reset"
-
-    # Check for failed state
-    if st.session_state.get("audit_failed", False):
+    elif st.session_state.get("running_audit", False):
+        return "running_audit"
+    elif st.session_state.get("audit_failed", False):
         return "audit_failed"
-
-    # Check for completed state (must have both flags and report)
-    if (
-        st.session_state.get("audit_completed", False)
-        and st.session_state.get("audit_report") is not None
+    elif st.session_state.get("audit_completed", False) and st.session_state.get(
+        "audit_report"
     ):
         return "audit_completed"
-
-    # Check for running state (must have input data)
-    if (
-        st.session_state.get("running_audit", False)
-        and st.session_state.get("travel_input_data")
-        and st.session_state.get("ticket_input_data")
-    ):
-        return "running_audit"
-
-    # Default to input form (also handles inconsistent states)
-    return "input_form"
+    else:
+        return "input_form"
 
 
 def reset_app_state():
-    """Reset all application state more thoroughly"""
+    """Reset all application state"""
     keys_to_clear = [
         "sample_travel_data",
         "sample_ticket_data",
@@ -71,12 +58,10 @@ def reset_app_state():
         "ticket_input_data",
     ]
 
-    # Clear all keys atomically
     for key in keys_to_clear:
         if key in st.session_state:
             del st.session_state[key]
 
-    # Set reset flag last
     st.session_state.just_reset = True
 
 

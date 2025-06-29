@@ -133,22 +133,6 @@ def _render_data_controls():
     if not st.session_state.get("api_key_validated", False):
         return
 
-    # Add debug info for cloud deployment (can be removed in production)
-    if st.checkbox("🐛 Show Debug Info"):
-        from .common import get_app_state
-
-        st.json(
-            {
-                "running_audit": st.session_state.get("running_audit", False),
-                "audit_completed": st.session_state.get("audit_completed", False),
-                "has_travel_data": bool(st.session_state.get("travel_input_data")),
-                "has_ticket_data": bool(st.session_state.get("ticket_input_data")),
-                "has_audit_report": bool(st.session_state.get("audit_report")),
-                "app_state": get_app_state(),
-                "audit_failed": st.session_state.get("audit_failed", False),
-            }
-        )
-
     # Check if audit is currently running
     audit_running = st.session_state.get("running_audit", False)
     audit_completed = st.session_state.get("audit_completed", False)
@@ -174,12 +158,27 @@ def _render_data_controls():
                 disabled=st.session_state.get("loading_sample", False),
                 help="Clear all JSON input data",
             ):
-                # Use the centralized reset function for consistency
-                from .common import reset_app_state
-
+                # Clear all session state completely
+                st.session_state.sample_travel_data = ""
+                st.session_state.sample_ticket_data = ""
+                st.session_state.manual_data_entered = False
+                st.session_state.audit_completed = False  # Clear audit results
+                st.session_state.audit_report = None  # Clear stored report
+                st.session_state.running_audit = False
+                st.session_state.loading_sample = False
+                st.session_state.audit_failed = False  # Clear audit failed state
+                st.session_state.json_errors = []  # Clear stored errors
+                st.session_state.just_reset = True  # Flag to show clean interface
+                # Force text areas to refresh by updating their keys
+                st.session_state.travel_input = ""
+                st.session_state.ticket_input = ""
+                # Clear any stored input data from audit
+                if "travel_input_data" in st.session_state:
+                    del st.session_state.travel_input_data
+                if "ticket_input_data" in st.session_state:
+                    del st.session_state.ticket_input_data
                 logger.info("🔄 All JSON data reset by user")
                 show_notification("All data cleared successfully!", "info")
-                reset_app_state()
                 st.rerun()
         else:
             # Show load button only when audit is not running

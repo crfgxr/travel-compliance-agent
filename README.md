@@ -4,12 +4,6 @@
 
 An AI-agent powered automation solution for auditing travel booking compliance.
 
-## 🌐 Live Demo
-
-**Try it now:** [https://travel-compliance-agent-6btjffnp4rs4zcp6wn9dz5.streamlit.app/](https://travel-compliance-agent-6btjffnp4rs4zcp6wn9dz5.streamlit.app/)
-
-_Note: You'll need your own OpenAI API key to use the live demo._
-
 ## 🎯 Project Overview
 
 This system automatically audits travel bookings against three key compliance rules:
