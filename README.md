@@ -26,9 +26,12 @@ The system follows a clear sequential flow from API key validation through compl
 - **Testing**: Pytest - Standard testing framework with comprehensive coverage
 - **Environment**: python-dotenv - Secure environment variable management
 
-## 🖥️ Work Examples
+## 🖥️ Interface Examples
 
 The application provides an intuitive web interface for compliance auditing:
+
+**Main Interface:**
+![Input Example](images/ui_example.png)
 
 **Input Interface:**
 ![Input Example](images/input_example.png)
@@ -131,8 +134,6 @@ tests/test_compliance.py::TestDataStructures::test_data_structure_compatibility 
 _Tests automatically skip AI-dependent checks when OpenAI API key is not configured._
 
 ## 🔮 Possible Iterations
-
-The following improvements are planned to enhance the system's capabilities and production readiness:
 
 ### 🏗️ Architecture & Infrastructure
 
