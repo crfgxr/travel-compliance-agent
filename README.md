@@ -2,7 +2,7 @@
 
 > **Version 0.3**
 
-An AI-agent powered automation solution for auditing travel booking compliance.
+![An AI-agent powered automation solution for auditing travel booking compliance](images/bot.png)
 
 ## 🎯 Project Overview
 
@@ -131,7 +131,7 @@ tests/test_compliance.py::TestDataStructures::test_data_structure_compatibility 
 
 _Tests automatically skip AI-dependent checks when OpenAI API key is not configured._
 
-## 🔮 Possible Future Improvements
+## 🔮 Possible Iterations
 
 The following improvements are planned to enhance the system's capabilities and production readiness:
 
@@ -151,6 +151,17 @@ The following improvements are planned to enhance the system's capabilities and 
 
 - **Real-time Data Fetching** - Replace static JSON databases with live API integrations for airline routes, approval workflows, and ticket reservations
 - **Cost Tracking & Analytics** - Implement detailed cost monitoring for API usage, processing time, and operational expenses with automated reporting
+
+### 💰 Enhanced Compliance Rules
+
+- **Cost Compliance** - Check if ticket prices stay within company budget limits. Set max spending amounts for different employee levels. Make sure people book the right cabin class
+
+### 💬 Chat with Data Features
+
+- **Ask Questions** - Let users chat with their travel data. Ask things like "Show me all trips over $5000" or "Which flights were booked late?"
+- **Smart Search** - Find travel records by talking in plain English. No need to know database terms or write complex searches
+- **Data Insights** - Get quick answers about travel patterns, spending trends, and policy violations by just asking
+- **Export Chat Results** - Save chat answers as reports for managers and finance teams
 
 ### 🔧 Operations & Monitoring
 
