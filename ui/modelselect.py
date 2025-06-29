@@ -3,10 +3,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Model pricing information (per million tokens)
-MODEL_PRICING = {
+# Available models with pricing information (per million tokens)
+MODELS = {
     "o4-mini-2025-04-16": {"input": 1.10, "cache": 0.275, "output": 4.40},
-    "o3-2025-04-16": {"input": 2.00, "cache": 0.50, "output": 8.00},
     "gpt-4.1-2025-04-14": {"input": 2.00, "cache": 0.50, "output": 8.00},
 }
 
@@ -15,7 +14,7 @@ def render_model_select():
     """Render model selection dropdown component"""
     model_name = st.selectbox(
         "Select AI Model",
-        options=["o4-mini-2025-04-16", "o3-2025-04-16", "gpt-4.1-2025-04-14"],
+        options=list(MODELS.keys()),
         index=0,
         help="Select the AI model for compliance checking",
     )
@@ -32,8 +31,8 @@ def render_model_select():
 
 def _render_cost_section(model_name):
     """Render cost information section for the selected model"""
-    if model_name in MODEL_PRICING:
-        pricing = MODEL_PRICING[model_name]
+    if model_name in MODELS:
+        pricing = MODELS[model_name]
 
         # Simple, clean cost display
         st.markdown(
@@ -53,4 +52,4 @@ def _render_cost_section(model_name):
 
 def get_selected_model():
     """Get the currently selected model from session state"""
-    return st.session_state.get("selected_model", "o4-mini-2025-04-16")
+    return st.session_state.get("selected_model", list(MODELS.keys())[0])

@@ -35,6 +35,56 @@ This system automatically audits travel bookings against three key compliance ru
                        └─────────────────┘
 ```
 
+## 🔧 Technical Design Details
+
+### Context Window Management
+
+Each compliance agent operates with **independent context windows** - they do **NOT** share the same context:
+
+```python
+# Shared LLM Instance (orchestrator.py)
+self.llm = ChatOpenAI(model=model, openai_api_key=openai_api_key)
+self.timing_agent = TimingAgent(self.llm)      # Gets LLM reference
+self.identity_agent = IdentityAgent(self.llm)  # Gets LLM reference
+self.route_agent = RouteAgent(self.llm)        # Gets LLM reference
+```
+
+**How Each Agent Works:**
+
+1. **TimingAgent**: Opens fresh context → System message + User prompt → API call → Response
+2. **IdentityAgent**: Opens fresh context → System message + User prompt → API call → Response
+3. **RouteAgent**: Opens fresh context → System message + User prompt → API call → Response
+
+**Key Characteristics:**
+
+- ✅ **Stateless Calls**: Each `llm.invoke()` is completely independent
+- ✅ **Clean Context**: No cross-contamination between compliance checks
+- ✅ **Focused Analysis**: Each agent sees only relevant data for its specific task
+- ❌ **No Shared Memory**: Agents cannot reference previous agent results
+- ❌ **Higher Token Usage**: System messages repeated for each call
+
+**API Call Pattern:**
+
+```python
+# Each agent makes separate HTTP requests
+system_message = SystemMessage(content="You are a travel compliance expert...")
+human_message = HumanMessage(content=user_prompt)
+response = self.llm.invoke([system_message, human_message])  # New context window
+```
+
+**Observable in Logs:**
+
+```
+⏰ Running Flight Ticket Timing check (1/3)
+HTTP Request: POST https://api.openai.com/v1/chat/completions    # Fresh context
+👤 Running Passenger Identity check (2/3)
+HTTP Request: POST https://api.openai.com/v1/chat/completions    # Fresh context
+✈️ Running SunExpress Route Compliance check (3/3)
+HTTP Request: POST https://api.openai.com/v1/chat/completions    # Fresh context
+```
+
+This design ensures predictable behavior and prevents context pollution between different compliance domains.
+
 ## 🚀 Tech Stack
 
 - **Backend**: Python 3.9+

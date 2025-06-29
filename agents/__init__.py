@@ -1,10 +1,6 @@
 # Backward compatibility - expose the main class
 from .orchestrator import ComplianceAgent
-from .orchestrator import (
-    ALL_RULES,
-    get_all_rule_names,
-    add_new_rule_type,
-)
+
 
 # Also expose individual agents if needed
 from .timing_agent import (
@@ -35,10 +31,6 @@ __all__ = [
     "TimingAgent",
     "IdentityAgent",
     "RouteAgent",
-    # Rule management
-    "ALL_RULES",
-    "get_all_rule_names",
-    "add_new_rule_type",
     # Timing compliance
     "TIMING_RULES",
     "TIMING_RULE_CONFIG",
@@ -58,7 +50,6 @@ __all__ = [
 
 
 # Initialize the ALL_RULES dictionary with all rule types for backward compatibility
-from .orchestrator import add_new_rule_type
 from .timing_agent import TIMING_RULES, TIMING_RULE_CONFIG, get_timing_compliance_prompt
 from .identity_agent import (
     PASSENGER_IDENTITY_RULES,
@@ -68,24 +59,5 @@ from .identity_agent import (
 from .route_agent import (
     ROUTE_COMPLIANCE_RULES,
     ROUTE_COMPLIANCE_RULE_CONFIG,
-    get_route_compliance_prompt,
-)
-
-# Populate ALL_RULES for backward compatibility
-add_new_rule_type(
-    "timing", TIMING_RULE_CONFIG, TIMING_RULES, get_timing_compliance_prompt
-)
-
-add_new_rule_type(
-    "passenger_identity",
-    PASSENGER_IDENTITY_RULE_CONFIG,
-    PASSENGER_IDENTITY_RULES,
-    get_passenger_identity_prompt,
-)
-
-add_new_rule_type(
-    "route_compliance",
-    ROUTE_COMPLIANCE_RULE_CONFIG,
-    ROUTE_COMPLIANCE_RULES,
     get_route_compliance_prompt,
 )

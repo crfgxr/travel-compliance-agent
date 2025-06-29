@@ -89,14 +89,11 @@ def render_audit_progress():
                             )
 
                     # Create compliance agent for this audit session
-                    model_name = st.session_state.get(
-                        "selected_model", "gpt-4.1-2025-04-14"
-                    )
+                    model_name = st.session_state.get("selected_model")
 
                     # Create ComplianceAgent with proper parameters
                     compliance_agent = ComplianceAgent(
                         model=model_name,
-                        temperature=0,
                         openai_api_key=st.session_state.get("openai_api_key"),
                     )
 
