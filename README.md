@@ -6,7 +6,7 @@ An AI-agent powered automation solution for auditing travel booking compliance.
 
 ## 🌐 Live Demo
 
-**Try it now:** [https://travel-compliance-agent-dzk3dyc3ecappn5vr4hsxpo.streamlit.app/](https://travel-compliance-agent-dzk3dyc3ecappn5vr4hsxpo.streamlit.app/)
+**Try it now:** [https://travel-compliance-agent-6btjffnp4rs4zcp6wn9dz5.streamlit.app/](https://travel-compliance-agent-6btjffnp4rs4zcp6wn9dz5.streamlit.app/)
 
 _Note: You'll need your own OpenAI API key to use the live demo._
 
@@ -72,3 +72,29 @@ cp .env.example .env
 ```bash
 streamlit run app.py
 ```
+
+## 🔮 Possible Future Improvements
+
+The following improvements are planned to enhance the system's capabilities and production readiness:
+
+### 🏗️ Architecture & Infrastructure
+
+- **Frontend Migration to React** - Transition from Streamlit to React-based frontend for improved state management, enhanced user experience, and better scalability
+- **Serverless Architecture** - Refactor to serverless deployment with automated alert mechanisms for cost-effective, event-driven processing
+- **Retry Mechanisms** - Implement robust retry logic with exponential backoff for improved reliability and fault tolerance across all external API calls
+
+### 🤖 AI & Model Enhancements
+
+- **Improve Model Support** - Integrate additional AI model providers (Anthropic Claude, Google Gemini, DeepSeek or Grok) for enhanced flexibility and cost comparison
+- **Dynamic Schema Understanding** - Enable agents to dynamically parse and understand JSON field structures through integrated API documentation uploads
+- **LLM Monitoring & Observability** - Implement comprehensive monitoring for model performance, token usage, response quality, and error tracking
+
+### 📊 Data & Integration
+
+- **Real-time Data Fetching** - Replace static JSON databases with live API integrations for airline routes, approval workflows, and ticket reservations
+- **Cost Tracking & Analytics** - Implement detailed cost monitoring for API usage, processing time, and operational expenses with automated reporting
+
+### 🔧 Operations & Monitoring
+
+- **Performance Metrics** - Add comprehensive dashboards for system health, processing times, and compliance audit success rates
+- **Automated Alerting** - Configure intelligent notification systems for compliance violations, system errors, and operational anomalies
