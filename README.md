@@ -18,7 +18,7 @@ This system automatically audits travel bookings against three key compliance ru
 
 ### Application Flow Diagram
 
-![Travel Compliance Agent Architecture Diagram](flow-diagram.svg)
+![Travel Compliance Agent Architecture Diagram](flow-diagram.png)
 
 The system follows a clear sequential flow from API key validation through compliance checking to report generation, with proper error handling at each stage.
 
