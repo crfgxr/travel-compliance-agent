@@ -1,9 +1,28 @@
 import json
 import logging
-from typing import Dict, Any, List
+import os
+from typing import Dict, Any
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Set up logger
 logger = logging.getLogger(__name__)
+
+
+def get_openai_key_from_env() -> str:
+    """Get OpenAI API key from environment variables"""
+    return os.getenv("OPENAI_API_KEY", "")
+
+
+def is_api_key_available() -> bool:
+    """Check if OpenAI API key is available from environment"""
+    env_key = get_openai_key_from_env()
+    if env_key:
+        logger.info("🔑 Found OpenAI API key in environment variables")
+        return True
+    return False
 
 
 def validate_openai_key(api_key: str) -> bool:
@@ -50,49 +69,4 @@ def extract_data_from_json(travel_data: dict, ticket_data: dict) -> tuple:
         return None, None
 
 
-def format_compliance_result(result: dict) -> str:
-    """Format compliance result for display"""
-    status_emoji = {
-        "COMPLIANT": "✅",
-        "NON_COMPLIANT": "❌",
-        "WARNING": "⚠️",
-        "SYSTEM_ERROR": "🚨",
-        "json_parse_error": "🚨",
-        "llm_call_error": "🚨",
-    }
-
-    status = result.get("status", "UNKNOWN")
-    rule_name = result.get("rule_name", "Unknown Rule")
-    message = result.get("message", "No message")
-
-    # Special handling for error statuses to make them clearer
-    if status in ["json_parse_error", "llm_call_error", "SYSTEM_ERROR"]:
-        return f"{status_emoji.get(status, '❓')} **{rule_name}**: Failed to parse LLM response as valid JSON"
-
-    return f"{status_emoji.get(status, '❓')} **{rule_name}**: {message}"
-
-
-def create_sample_data() -> tuple:
-    """Load sample data from JSON files"""
-    try:
-        # Load travel approval data from sample_data/TravelApproval.json
-        with open("sample_data/TravelApproval.json", "r", encoding="utf-8") as f:
-            sample_travel_approval = json.load(f)
-
-        # Load ticket data from sample_data/Ticket.json
-        with open("sample_data/Ticket.json", "r", encoding="utf-8") as f:
-            sample_ticket_data = json.load(f)
-
-        return sample_travel_approval, sample_ticket_data
-
-    except FileNotFoundError as e:
-        error_msg = f"Sample data file not found: {str(e)}"
-        logger.error(f"❌ {error_msg}")
-        return None, None
-    except json.JSONDecodeError as e:
-        error_msg = f"Error parsing sample data JSON: {str(e)}"
-        logger.error(f"❌ {error_msg}")
-        return None, None
-
-
-# v0.1 working
+# v0.2 refactored - UI functions moved to ui/common.py

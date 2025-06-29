@@ -282,6 +282,7 @@ config/secrets.json
 config/api_keys.json
 *.env
 .env.*
+!.env.example
 credentials/
 logs/
 temp_data/
@@ -482,4 +483,4 @@ cython_debug/
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db 
+Thumbs.db .env

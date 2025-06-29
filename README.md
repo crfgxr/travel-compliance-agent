@@ -23,7 +23,7 @@ This system automatically audits travel bookings against three key compliance ru
 │   Streamlit UI  │    │ Compliance      │    │ OpenAI Response │
 │   - Data Input  │───▶│ Agent           │───▶│ API             │
 │   - Progress    │    │ - Timing Check  │    │   - LangChain   │
-│   - Results     │    │ - Identity Check│    │   - Direct API  │
+│   - Results     │    │ - Identity Check│    │                 │
 └─────────────────┘    │ - Route Check   │    └─────────────────┘
                        └─────────────────┘
                                 │
@@ -37,20 +37,24 @@ This system automatically audits travel bookings against three key compliance ru
 
 ## 🚀 Tech Stack
 
-- **Backend**: Python 3.8+
-- **AI Framework**: OpenAI GPT-4 via LangChain
+- **Backend**: Python 3.9+
+- **AI Framework**: OpenAI via LangChain
 - **UI**: Streamlit
-- **Rules Engine**: Centralized compliance rules system
 - **Testing**: Pytest
 - **Environment**: python-dotenv
 
 ### Why This Stack?
 
-- **OpenAI GPT-4**: Advanced reasoning for complex compliance scenarios
+- **LLM**: Advanced reasoning models selected for complex compliance scenarios
 - **LangChain**: Simplified LLM integration and prompt management
 - **Streamlit**: Rapid prototyping with beautiful, interactive UI
-- **Centralized Rules**: Maintainable and extensible business logic
 - **Native Python**: Lightweight implementation without framework overhead
+
+used those models
+latest powerful: gpt-4.1-2025-04-14 https://platform.openai.com/docs/models/gpt-4.1
+price senstive reasoning model: o4-mini-2025-04-16 https://platform.openai.com/docs/models/o4-mini
+
+used https://raw.githubusercontent.com/Jonty/airline-route-data/refs/heads/main/airline_routes.json for checking airlines routes
 
 ## 📦 Installation
 
