@@ -67,18 +67,17 @@ def render_input_form():
             disabled=either_input_empty,
         ):
             if travel_approval_input and ticket_data_input:
-                # Set session state immediately
-                st.session_state.running_audit = True
-                st.session_state.audit_completed = False
-                st.session_state.travel_input_data = travel_approval_input
-                st.session_state.ticket_input_data = ticket_data_input
+                with st.spinner("🚀 Starting compliance audit..."):
+                    # Set session state
+                    st.session_state.running_audit = True
+                    st.session_state.audit_completed = False
+                    st.session_state.travel_input_data = travel_approval_input
+                    st.session_state.ticket_input_data = ticket_data_input
 
-                # Show progress UI immediately - no delay
-                st.markdown("---")
-                st.subheader("🔄 Running Compliance Audit")
-                st.info("🚀 Audit started! Processing your data...")
-                progress_placeholder = st.empty()
-                progress_placeholder.progress(0)
+                    # Small delay to ensure spinner shows
+                    import time
 
-                # Then trigger rerun for full progress UI
+                    time.sleep(0.5)
+
+                # Trigger rerun for audit progress
                 st.rerun()
