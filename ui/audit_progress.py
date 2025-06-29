@@ -20,8 +20,24 @@ def render_audit_progress():
         _render_results_inline(st.session_state.audit_report)
         return
 
+    # Ensure we have the required data
     travel_approval_input = st.session_state.get("travel_input_data", "")
     ticket_data_input = st.session_state.get("ticket_input_data", "")
+
+    # Add state validation
+    if not st.session_state.get("running_audit", False):
+        st.error("⚠️ Audit state inconsistency detected. Please restart the audit.")
+        if st.button("🔄 Return to Input Form"):
+            st.session_state.running_audit = False
+            st.session_state.audit_completed = False
+            st.rerun()
+        return
+
+    # Show progress header immediately
+    st.subheader("🔄 Running Compliance Audit")
+
+    # Create progress elements early
+    progress_container = st.container()
 
     if travel_approval_input and ticket_data_input:
         logger.info("🚀 Starting compliance audit...")
@@ -56,13 +72,11 @@ def render_audit_progress():
                 if travel_approval and flight_reservations:
                     logger.info("🔍 Running compliance checks...")
 
-                    # Create progress tracking section that persists across runs
-                    st.subheader("🔄 Running Compliance Audit")
-
-                    # Create persistent progress elements
-                    progress_bar = st.progress(0)
-                    status_text = st.empty()
-                    current_job_text = st.empty()
+                    # Create progress elements within the container
+                    with progress_container:
+                        progress_bar = st.progress(0)
+                        status_text = st.empty()
+                        current_job_text = st.empty()
 
                     # Progress callback function
                     def update_progress(current, total, current_job, description, icon):

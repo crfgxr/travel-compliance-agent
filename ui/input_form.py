@@ -64,8 +64,12 @@ def render_input_form():
             disabled=either_input_empty,
         ):
             if travel_approval_input and ticket_data_input:
+                # Set all state atomically BEFORE rerun
                 st.session_state.running_audit = True
-                st.session_state.audit_completed = False  # Reset completion flag
+                st.session_state.audit_completed = False
                 st.session_state.travel_input_data = travel_approval_input
                 st.session_state.ticket_input_data = ticket_data_input
+                st.session_state.audit_failed = False  # Reset failed state
+                st.session_state.audit_report = None  # Clear previous results
+                # Force immediate rerun with consistent state
                 st.rerun()

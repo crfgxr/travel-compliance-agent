@@ -15,7 +15,7 @@ from ui import (
 )
 
 # Version
-__version__ = "0.3"
+__version__ = "0.4"
 
 # Configure logging to show in terminal
 logging.basicConfig(
@@ -56,6 +56,9 @@ def main():
         logger.warning("⚠️ No valid OpenAI API key provided")
         return
 
+    # Add state consistency check
+    _validate_app_state()
+
     # Determine app state and render accordingly
     app_state = get_app_state()
 
@@ -69,6 +72,25 @@ def main():
         render_audit_results()
     else:  # default: input_form
         render_input_form()
+
+
+def _validate_app_state():
+    """Validate and fix inconsistent app state"""
+    # Fix orphaned running_audit state
+    if (
+        st.session_state.get("running_audit", False)
+        and not st.session_state.get("travel_input_data")
+        and not st.session_state.get("ticket_input_data")
+    ):
+        logger.warning("⚠️ Fixing orphaned running_audit state")
+        st.session_state.running_audit = False
+
+    # Fix conflicting audit states
+    if st.session_state.get("running_audit", False) and st.session_state.get(
+        "audit_completed", False
+    ):
+        logger.warning("⚠️ Fixing conflicting audit states")
+        st.session_state.running_audit = False
 
 
 def _render_reset_success():
