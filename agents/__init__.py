@@ -1,8 +1,6 @@
 # Backward compatibility - expose the main class
 from .orchestrator import ComplianceAgent
 from .orchestrator import (
-    create_llm_client,
-    OpenAIResponsesClient,
     ALL_RULES,
     get_all_rule_names,
     add_new_rule_type,
@@ -37,9 +35,6 @@ __all__ = [
     "TimingAgent",
     "IdentityAgent",
     "RouteAgent",
-    # LLM client utilities
-    "create_llm_client",
-    "OpenAIResponsesClient",
     # Rule management
     "ALL_RULES",
     "get_all_rule_names",

@@ -2,7 +2,7 @@ import pytest
 import json
 from datetime import datetime
 from src.models import *
-from agents import ComplianceAgent, OpenAIResponsesClient
+from agents import ComplianceAgent
 
 
 @pytest.fixture

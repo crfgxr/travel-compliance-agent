@@ -24,16 +24,22 @@ def _render_api_key_section():
     if not st.session_state.get("api_key_validated", False):
         env_key = get_openai_key_from_env()
         if env_key and not st.session_state.get("env_key_checked", False):
-            # Validate the environment key
-            if validate_openai_key(env_key):
-                st.session_state.api_key_validated = True
-                st.session_state.openai_api_key = env_key
-                st.session_state.env_key_checked = True
-                os.environ["OPENAI_API_KEY"] = env_key
-                logger.info("✅ OpenAI API key loaded from environment and validated")
-            else:
-                st.session_state.env_key_checked = True
-                logger.warning("❌ Environment API key is invalid")
+            # Show loading spinner while validating environment key
+            with st.spinner("🔑 Validating OpenAI API key from environment..."):
+                logger.info("🔑 Validating OpenAI API key from environment...")
+                # Validate the environment key
+                if validate_openai_key(env_key):
+                    st.session_state.api_key_validated = True
+                    st.session_state.openai_api_key = env_key
+                    st.session_state.env_key_checked = True
+                    os.environ["OPENAI_API_KEY"] = env_key
+                    logger.info(
+                        "✅ OpenAI API key loaded from environment and validated"
+                    )
+                    st.rerun()  # Refresh to show validated state immediately
+                else:
+                    st.session_state.env_key_checked = True
+                    logger.warning("❌ Environment API key is invalid")
 
     if not st.session_state.get("api_key_validated", False):
         _render_api_key_input()

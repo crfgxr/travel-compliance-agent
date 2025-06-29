@@ -12,32 +12,6 @@ logger = logging.getLogger(__name__)
 
 
 # =============================================================================
-# LLM CLIENT CREATION (moved from shared_utils)
-# =============================================================================
-
-
-def create_llm_client(
-    model: str,
-    temperature: float = 0,
-    openai_api_key: str = None,
-) -> ChatOpenAI:
-    """Create and return a ChatOpenAI instance"""
-    # Handle empty model string by providing a default
-    if not model or model.strip() == "":
-        model = "gpt-4o-mini"  # dummy string added real model will pass from UI
-
-    return ChatOpenAI(
-        model=model,
-        temperature=temperature,
-        openai_api_key=openai_api_key,
-    )
-
-
-# For backward compatibility, create an alias
-OpenAIResponsesClient = create_llm_client
-
-
-# =============================================================================
 # RULE METADATA SYSTEM (moved from shared_utils)
 # =============================================================================
 
@@ -72,14 +46,31 @@ def add_new_rule_type(rule_key: str, config: Dict, rules: List[str], prompt_func
 
 
 class ComplianceAgent:
+    def _create_llm_client(
+        self,
+        model: str,
+        temperature: float = 0,
+        openai_api_key: str = None,
+    ) -> ChatOpenAI:
+        """Create and return a ChatOpenAI instance"""
+        # Handle empty model string by providing a default
+        if not model or model.strip() == "":
+            model = "gpt-4o-mini"  # dummy string added real model will pass from UI
+
+        return ChatOpenAI(
+            model=model,
+            temperature=temperature,
+            openai_api_key=openai_api_key,
+        )
+
     def __init__(
         self,
         model: str = "gpt-4o-mini",  # dummy string added real model will pass from UI
         temperature: float = 0,
         openai_api_key: str = None,
     ):
-        # Create a single LLM instance using local create_llm_client function
-        self.llm = create_llm_client(
+        # Create a single LLM instance using private method
+        self.llm = self._create_llm_client(
             model=model, temperature=temperature, openai_api_key=openai_api_key
         )
 

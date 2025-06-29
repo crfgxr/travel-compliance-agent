@@ -1,6 +1,6 @@
 import streamlit as st
 import logging
-from agents import ComplianceAgent, create_llm_client
+from agents import ComplianceAgent
 from utils import parse_json_input, extract_data_from_json
 from .common import show_notification
 
