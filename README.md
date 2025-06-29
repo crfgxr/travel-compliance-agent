@@ -56,9 +56,6 @@ The application provides an intuitive web interface for compliance auditing:
 **Main Interface:**
 ![Main Example](images/main_example.png)
 
-**Input Interface:**
-![Input Example](images/input_example.png)
-
 **Job Interface:**
 ![Job Example](images/job_example.png)
 
