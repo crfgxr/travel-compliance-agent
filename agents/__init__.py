@@ -5,9 +5,8 @@ from .orchestrator import ComplianceAgent
 # Also expose individual agents if needed
 from .timing_agent import (
     TimingAgent,
-    TIMING_RULES,
-    TIMING_RULE_CONFIG,
-    get_timing_compliance_prompt,
+    TIMING_RULE,
+    get_timing_prompt,
 )
 from .identity_agent import (
     IdentityAgent,
@@ -31,9 +30,8 @@ __all__ = [
     "IdentityAgent",
     "RouteAgent",
     # Timing compliance
-    "TIMING_RULES",
-    "TIMING_RULE_CONFIG",
-    "get_timing_compliance_prompt",
+    "TIMING_RULE",
+    "get_timing_prompt",
     # Identity compliance
     "PASSENGER_IDENTITY_RULES",
     "PASSENGER_IDENTITY_RULE_CONFIG",

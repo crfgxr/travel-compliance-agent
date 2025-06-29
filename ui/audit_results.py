@@ -29,7 +29,8 @@ def render_audit_results():
             expanded=False,
         ):
             details = result.get("details", {})
-            violations = details.get("violations", [])
+            # Handle both old format (details.violations) and new format (result.violations)
+            violations = details.get("violations", []) or result.get("violations", [])
 
             if violations:
                 st.subheader("🚨 Issues Found:")
