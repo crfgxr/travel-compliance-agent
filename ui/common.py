@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,19 @@ def show_notification(message: str, type: str = "info"):
     else:
         st.info(message)
         logger.info(f"ℹ️ {message}")
+
+
+def is_cloud_deployment():
+    """Detect if running in cloud deployment vs localhost"""
+    # Check common cloud deployment environment variables
+    cloud_indicators = [
+        os.environ.get("STREAMLIT_SERVER_PORT"),  # Streamlit Cloud
+        os.environ.get("DYNO"),  # Heroku
+        os.environ.get("AWS_REGION"),  # AWS
+        os.environ.get("GOOGLE_CLOUD_PROJECT"),  # Google Cloud
+        "streamlit.app" in os.environ.get("STREAMLIT_SERVER_ADDRESS", ""),
+    ]
+    return any(cloud_indicators)
 
 
 def get_app_state():
@@ -56,6 +70,8 @@ def reset_app_state():
         "ticket_input",
         "travel_input_data",
         "ticket_input_data",
+        "audit_request",
+        "audit_data_retry_count",
     ]
 
     for key in keys_to_clear:

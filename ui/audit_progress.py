@@ -2,7 +2,7 @@ import streamlit as st
 import logging
 from agents import ComplianceAgent
 from utils import parse_json_input, extract_data_from_json
-from .common import show_notification, format_compliance_result
+from .common import show_notification, format_compliance_result, is_cloud_deployment
 
 logger = logging.getLogger(__name__)
 
@@ -28,8 +28,22 @@ def render_audit_progress():
         logger.error("❌ render_audit_progress called but running_audit is False")
         return
 
-    travel_approval_input = st.session_state.get("travel_input_data", "")
-    ticket_data_input = st.session_state.get("ticket_input_data", "")
+    # Cloud-optimized data access: Use atomic audit_request first, fall back to individual keys
+    audit_request = st.session_state.get("audit_request", {})
+
+    if audit_request and audit_request.get("status") == "initiated":
+        # Use data from atomic request
+        travel_approval_input = audit_request.get("travel_input_data", "")
+        ticket_data_input = audit_request.get("ticket_input_data", "")
+        logger.info(
+            f"🚀 Using atomic audit request from timestamp: {audit_request.get('timestamp', 'unknown')}"
+        )
+    else:
+        # Fallback to individual session state keys (for backward compatibility)
+        travel_approval_input = st.session_state.get("travel_input_data", "")
+        ticket_data_input = st.session_state.get("ticket_input_data", "")
+        if travel_approval_input and ticket_data_input:
+            logger.info("🚀 Using fallback individual session state keys")
 
     if travel_approval_input and ticket_data_input:
         logger.info("🚀 Starting compliance audit...")
@@ -66,6 +80,9 @@ def render_audit_progress():
             st.session_state.loading_sample = False
             st.session_state.audit_failed = True
             st.session_state.json_errors = json_errors
+            # Clean up atomic request
+            if "audit_request" in st.session_state:
+                del st.session_state.audit_request
             st.rerun()
         elif travel_data and ticket_data:
             logger.info("📊 Extracting data for LLM processing...")
@@ -136,39 +153,72 @@ def render_audit_progress():
                 st.session_state.audit_completed = True
                 st.session_state.loading_sample = False
 
+                # Clean up atomic request
+                if "audit_request" in st.session_state:
+                    del st.session_state.audit_request
+
                 logger.info("✅ Compliance audit completed and results displayed")
 
                 # Trigger a controlled rerun to update sidebar state
                 st.rerun()
     else:
-        # Handle missing data more gracefully to prevent race conditions
-        # Don't immediately clear running_audit - this might be a transient Streamlit session state issue
-
-        # Show a loading state and attempt to recover
+        # Enhanced cloud-specific retry logic
         st.subheader("🔄 Preparing Audit Data...")
 
         # Initialize retry counter if not exists
         if "audit_data_retry_count" not in st.session_state:
             st.session_state.audit_data_retry_count = 0
 
-        # If this is our first few attempts, try to recover gracefully
-        if st.session_state.audit_data_retry_count < 2:
-            st.info("⏳ Loading audit data, please wait...")
+        retry_count = st.session_state.audit_data_retry_count
+        cloud_env = is_cloud_deployment()
+        max_retries = 5 if cloud_env else 2  # More retries for cloud
+
+        # More aggressive retry for cloud environments
+        if retry_count < max_retries:
+            if retry_count == 0:
+                message = "⏳ Initializing audit..." + (
+                    " (cloud environment detected)" if cloud_env else ""
+                )
+                st.info(message)
+            elif retry_count < 3:
+                message = f"⏳ Synchronizing session state... (attempt {retry_count + 1}/{max_retries})"
+                if cloud_env:
+                    message += " - Cloud latency compensation active"
+                st.info(message)
+            else:
+                message = f"⏳ Handling cloud deployment latency... (attempt {retry_count + 1}/{max_retries})"
+                st.warning(message)
+
             st.session_state.audit_data_retry_count += 1
-            # Give Streamlit a chance to stabilize session state by triggering a rerun
             st.rerun()
         else:
-            # After retries, this is likely a real data issue
+            # After multiple cloud-optimized retries, this is a real issue
+            if cloud_env:
+                st.error(
+                    "❌ **Cloud Deployment Issue**: Session state synchronization failed."
+                )
+                st.info("💡 **Troubleshooting Steps:**")
+                st.info("1. Wait a moment and try clicking 'Run Audit' again")
+                st.info("2. Refresh the page and reload your data")
+                st.info("3. Check your internet connection stability")
+                st.info("4. If the issue persists, try using a different browser")
+            else:
+                st.error("❌ **Data Access Issue**: Unable to access audit data.")
+
             show_notification(
-                "Unable to load audit data. Please try starting the audit again.",
+                "Session synchronization failed. Please try again."
+                + (" (Cloud deployment)" if cloud_env else ""),
                 "error",
             )
-            logger.error("❌ Missing travel approval or ticket data after retries")
+            logger.error(
+                f"❌ Missing travel/ticket data after {max_retries} retries (cloud: {cloud_env})"
+            )
             st.session_state.running_audit = False
             st.session_state.loading_sample = False
-            # Clean up retry counter
-            if "audit_data_retry_count" in st.session_state:
-                del st.session_state.audit_data_retry_count
+            # Clean up
+            for key in ["audit_data_retry_count", "audit_request"]:
+                if key in st.session_state:
+                    del st.session_state[key]
 
 
 def _render_results_inline(report):

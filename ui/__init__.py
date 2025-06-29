@@ -7,6 +7,7 @@ from .common import (
     render_app_header,
     format_compliance_result,
     create_sample_data,
+    is_cloud_deployment,
 )
 from .sidebar import render_sidebar
 from .input_form import render_input_form
@@ -21,6 +22,7 @@ __all__ = [
     "render_app_header",
     "format_compliance_result",
     "create_sample_data",
+    "is_cloud_deployment",
     "render_sidebar",
     "render_input_form",
     "render_audit_progress",
