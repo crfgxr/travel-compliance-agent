@@ -1,4 +1,5 @@
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
+from pydantic import BaseModel, Field
 import json
 import logging
 import requests
@@ -7,6 +8,62 @@ import os
 
 # Setup logger
 logger = logging.getLogger(__name__)
+
+# =============================================================================
+# PYDANTIC MODELS FOR STRUCTURED OUTPUT
+# =============================================================================
+
+
+class RouteViolation(BaseModel):
+    """Model for route compliance violations"""
+
+    flight_number: str = Field(description="Flight number (e.g., TK123)")
+    reason: str = Field(
+        description="Clear explanation of why this flight violates the SunExpress route policy"
+    )
+    actual_airline: str = Field(description="Airline code that was used")
+    actual_airline_name: str = Field(description="Full airline name that was used")
+    route: str = Field(
+        description="Departure airport -> arrival airport (e.g., IST -> FRA)"
+    )
+    travel_date: str = Field(description="Date when travel occurred")
+    booking_reference: str = Field(description="Booking ID or confirmation number")
+    sunexpress_availability: str = Field(
+        description="Confirmation that SunExpress serves both airports"
+    )
+    route_details: str = Field(description="Details about SunExpress airport coverage")
+    policy_rule: str = Field(
+        default="SunExpress route availability violation",
+        description="Policy rule violated",
+    )
+
+
+class RouteDetails(BaseModel):
+    """Model for route compliance details"""
+
+    violations: List[RouteViolation] = Field(
+        default=[], description="List of route violations found"
+    )
+    data_errors: Optional[List[Dict[str, Any]]] = Field(
+        default=None, description="Any data retrieval errors"
+    )
+    note: Optional[str] = Field(
+        default=None, description="Additional notes about data issues"
+    )
+
+
+class RouteComplianceResult(BaseModel):
+    """Model for route compliance check result"""
+
+    rule_name: str = Field(
+        default="SunExpress Route Compliance", description="Name of the compliance rule"
+    )
+    status: str = Field(
+        description="Compliance status: COMPLIANT, NON_COMPLIANT, or UNKNOWN"
+    )
+    message: str = Field(description="Brief summary of findings for the user")
+    details: RouteDetails = Field(description="Detailed violation information")
+
 
 # =============================================================================
 # ROUTE COMPLIANCE RULES
@@ -189,12 +246,13 @@ def check_sunexpress_route_availability(
 
 def analyze_route_compliance_with_api(
     travel_approval: Dict[str, Any], flight_reservations: List[Dict[str, Any]]
-) -> Dict[str, Any]:
+) -> RouteComplianceResult:
     """
     Analyze route compliance by checking SunExpress availability using airline route data
+    Now returns a Pydantic model for consistency
 
     Returns:
-        Dict with compliance analysis results
+        RouteComplianceResult with compliance analysis results
     """
     violations = []
     api_errors = []
@@ -257,21 +315,21 @@ def analyze_route_compliance_with_api(
                     route_detail_text = f"Distance: {detail.get('distance_km', 0)}km, Flight time: {detail.get('flight_time_min', 0)} minutes"
 
                 violations.append(
-                    {
-                        "flight_number": flight_number,
-                        "reason": f"SunExpress operates the route {departure_airport} -> {arrival_airport}, but {airline_name} ({airline_code}) was used instead. This violates the SunExpress route optimization policy.",
-                        "actual_airline": airline_code,
-                        "actual_airline_name": airline_name,
-                        "route": f"{departure_airport} -> {arrival_airport}",
-                        "travel_date": travel_date,
-                        "booking_reference": booking_ref,
-                        "sunexpress_availability": availability.get(
+                    RouteViolation(
+                        flight_number=flight_number,
+                        reason=f"SunExpress operates the route {departure_airport} -> {arrival_airport}, but {airline_name} ({airline_code}) was used instead. This violates the SunExpress route optimization policy.",
+                        actual_airline=airline_code,
+                        actual_airline_name=airline_name,
+                        route=f"{departure_airport} -> {arrival_airport}",
+                        travel_date=travel_date,
+                        booking_reference=booking_ref,
+                        sunexpress_availability=availability.get(
                             "route_explanation", "SunExpress operates this route"
                         ),
-                        "route_details": route_detail_text
+                        route_details=route_detail_text
                         or f"SunExpress operates {departure_airport} -> {arrival_airport} route",
-                        "policy_rule": "SunExpress route availability violation",
-                    }
+                        policy_rule="SunExpress route availability violation",
+                    )
                 )
 
     # Determine final status and message
@@ -290,16 +348,12 @@ def analyze_route_compliance_with_api(
             else "All flights comply with SunExpress route policy"
         )
 
-    result = {
-        "rule_name": "SunExpress Route Compliance",
-        "status": status,
-        "message": message,
-        "details": {"violations": violations},
-    }
+    # Create the details object
+    details = RouteDetails(violations=violations)
 
     # Add data error information if any
     if api_errors:
-        result["details"]["data_errors"] = api_errors
+        details.data_errors = api_errors
         # Build note from actual data errors
         error_summary = []
         for error in api_errors:
@@ -307,91 +361,31 @@ def analyze_route_compliance_with_api(
                 f"{error['route']} on {error['date']}: {error['error']}"
             )
 
-        result["details"]["note"] = (
+        details.note = (
             f"Route verification failed for {len(api_errors)} route(s): "
             + "; ".join(error_summary)
         )
 
-    return result
-
-
-def get_route_compliance_prompt(
-    travel_approval: Dict[str, Any], flight_reservations: List[Dict[str, Any]]
-) -> str:
-    """Generate prompt for SunExpress route compliance check using airline route data"""
-
-    rules_text = "\n".join(
-        [f"{i+1}. {rule}" for i, rule in enumerate(ROUTE_COMPLIANCE_RULES)]
+    return RouteComplianceResult(
+        rule_name="SunExpress Route Compliance",
+        status=status,
+        message=message,
+        details=details,
     )
-
-    return f"""
-Check if traveler used alternative airlines when SunExpress was available on the same route.
-
-Travel Approval Data:
-{travel_approval}
-
-Flight Reservations Data:
-{flight_reservations}
-
-Rules to check:
-{rules_text}
-
-IMPORTANT: Use the analyze_route_compliance_with_api() function which will:
-1. For each flight in the reservations, extract route (origin → destination)
-2. Use airline route data from GitHub to check if SunExpress operates the specific route
-3. If SunExpress operates the route but traveler used a different airline, flag as violation
-4. Skip flights that are already SunExpress (no violation)
-
-BUSINESS LOGIC:
-- Only flag as violation if SunExpress actually operates the specific route
-- The goal is cost optimization - if SunExpress was available on the route, it should have been used
-- Different airlines are acceptable ONLY if SunExpress doesn't operate that specific route
-
-Call the analyze_route_compliance_with_api() function with the provided data and return its result directly.
-The function will return a JSON response with this EXACT structure:
-{{
-    "rule_name": "{ROUTE_COMPLIANCE_RULE_CONFIG['rule_name']}",
-    "status": "COMPLIANT",
-    "message": "Brief summary of findings for the user",
-    "details": {{
-        "violations": [
-            {{
-                "flight_number": "flight number (e.g., TK123)",
-                "reason": "Clear explanation of why this flight violates the SunExpress route policy",
-                "actual_airline": "airline code that was used",
-                "actual_airline_name": "full airline name that was used",
-                "route": "departure airport -> arrival airport (e.g., IST -> FRA)",
-                "travel_date": "date when travel occurred",
-                "booking_reference": "booking ID or confirmation number",
-                "sunexpress_availability": "confirmation that SunExpress serves both airports",
-                "route_details": "details about SunExpress airport coverage",
-                "policy_rule": "SunExpress route availability violation"
-            }}
-        ]
-    }}
-}}
-
-Important:
-- Status will be "NON_COMPLIANT" if violations found, "COMPLIANT" if no violations
-- Violations include details about SunExpress airport coverage
-- Clear explanation of cost optimization opportunity missed
-- Information about which airports SunExpress serves
-- If compliant, return empty violations array
-- MUST return valid JSON object (not array)
-- ALWAYS include all required fields: rule_name, status, message, details
-"""
 
 
 class RouteAgent:
     def __init__(self, llm):
         self.llm = llm
+        # Create structured output LLM (for potential future LLM-based route checking)
+        self.structured_llm = llm.with_structured_output(RouteComplianceResult)
 
     def check_route_compliance(
         self,
         travel_approval: Dict[str, Any],
         flight_reservations: List[Dict[str, Any]],
     ) -> Dict[str, Any]:
-        """Check if traveler used alternative airlines when SunExpress was available on the route using airline route data"""
+        """Check if traveler used alternative airlines when SunExpress was available on the route using airline route data with structured output"""
 
         try:
             # Use the route data-based function to check SunExpress route compliance
@@ -399,33 +393,17 @@ class RouteAgent:
                 travel_approval, flight_reservations
             )
 
-            # Ensure required fields are present
-            if not isinstance(result, dict):
-                return {
-                    "rule_name": "SunExpress Route Compliance",
-                    "status": "SYSTEM_ERROR",
-                    "message": "Route data function returned invalid format",
-                    "details": {
-                        "error_type": "invalid_format",
-                        "raw_response": result,
-                    },
-                }
-
-            # Ensure status field exists
-            if "status" not in result:
-                result["status"] = "SYSTEM_ERROR"
-                result["message"] = "Missing status field in route data response"
-                result["rule_name"] = "SunExpress Route Compliance"
-
-            return result
+            # Convert Pydantic model to dictionary for compatibility with existing code
+            return result.model_dump()
 
         except Exception as e:
             logger.error(f"Error in SunExpress route compliance check: {str(e)}")
             return {
                 "rule_name": "SunExpress Route Compliance",
                 "status": "SYSTEM_ERROR",
-                "message": f"Error checking SunExpress route compliance: {str(e)}",
+                "message": f"System error during route compliance check: {str(e)}",
                 "details": {
+                    "violations": [],
                     "error_type": "data_error",
                     "error_message": str(e),
                 },

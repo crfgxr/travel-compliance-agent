@@ -19,7 +19,6 @@ from .route_agent import (
     RouteAgent,
     ROUTE_COMPLIANCE_RULES,
     ROUTE_COMPLIANCE_RULE_CONFIG,
-    get_route_compliance_prompt,
     fetch_airline_route_data,
     check_sunexpress_route_availability,
     analyze_route_compliance_with_api,
@@ -42,22 +41,7 @@ __all__ = [
     # Route compliance
     "ROUTE_COMPLIANCE_RULES",
     "ROUTE_COMPLIANCE_RULE_CONFIG",
-    "get_route_compliance_prompt",
     "fetch_airline_route_data",
     "check_sunexpress_route_availability",
     "analyze_route_compliance_with_api",
 ]
-
-
-# Initialize the ALL_RULES dictionary with all rule types for backward compatibility
-from .timing_agent import TIMING_RULES, TIMING_RULE_CONFIG, get_timing_compliance_prompt
-from .identity_agent import (
-    PASSENGER_IDENTITY_RULES,
-    PASSENGER_IDENTITY_RULE_CONFIG,
-    get_passenger_identity_prompt,
-)
-from .route_agent import (
-    ROUTE_COMPLIANCE_RULES,
-    ROUTE_COMPLIANCE_RULE_CONFIG,
-    get_route_compliance_prompt,
-)

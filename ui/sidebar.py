@@ -108,12 +108,6 @@ def _render_api_key_input():
                     )
                     logger.warning("❌ OpenAI API key validation failed")
 
-    # Show validation feedback if attempted
-    if st.session_state.get("api_key_validation_attempted") and st.session_state.get(
-        "api_key_validation_error"
-    ):
-        st.error(st.session_state.api_key_validation_error)
-
     # Show helpful instructions
     if not api_key.strip():
         st.info("💡 Enter your OpenAI API key above and click 'Validate' to continue")

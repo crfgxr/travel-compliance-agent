@@ -1,10 +1,57 @@
 from langchain.schema import HumanMessage, SystemMessage
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
+from pydantic import BaseModel, Field
 import json
 import logging
 
 # Setup logger
 logger = logging.getLogger(__name__)
+
+# =============================================================================
+# PYDANTIC MODELS FOR STRUCTURED OUTPUT
+# =============================================================================
+
+
+class IdentityViolation(BaseModel):
+    """Model for identity compliance violations"""
+
+    passenger_name: str = Field(description="Passenger name from ticket")
+    reason: str = Field(
+        description="Clear explanation of why this passenger is not compliant"
+    )
+    ticket_employee_id: Optional[str] = Field(
+        default=None, description="Employee ID from flight ticket"
+    )
+    approved_employee_id: Optional[str] = Field(
+        default=None, description="Employee ID from travel approval (if exists)"
+    )
+    booking_reference: str = Field(description="Booking ID or confirmation number")
+    issue_type: str = Field(
+        description="Type of issue: name_mismatch|employee_id_mismatch|unauthorized_passenger|missing_approval"
+    )
+    expected_name: Optional[str] = Field(
+        default=None, description="Correct name from approval (if applicable)"
+    )
+
+
+class IdentityDetails(BaseModel):
+    """Model for identity compliance details"""
+
+    violations: List[IdentityViolation] = Field(
+        default=[], description="List of identity violations found"
+    )
+
+
+class IdentityComplianceResult(BaseModel):
+    """Model for identity compliance check result"""
+
+    rule_name: str = Field(
+        default="Passenger Identity", description="Name of the compliance rule"
+    )
+    status: str = Field(description="Compliance status: COMPLIANT or NON_COMPLIANT")
+    message: str = Field(description="Brief summary of findings for the user")
+    details: IdentityDetails = Field(description="Detailed violation information")
+
 
 # =============================================================================
 # PASSENGER IDENTITY RULES
@@ -49,51 +96,31 @@ Flight Reservations Data:
 Rules to check:
 {rules_text}
 
-Analyze the data and return a JSON response with this EXACT structure:
-{{
-    "rule_name": "{PASSENGER_IDENTITY_RULE_CONFIG['rule_name']}",
-    "status": "COMPLIANT",
-    "message": "Brief summary of findings for the user",
-    "details": {{
-        "violations": [
-            {{
-                "passenger_name": "passenger name from ticket",
-                "reason": "Clear explanation of why this passenger is not compliant",
-                "ticket_employee_id": "employee ID from flight ticket",
-                "approved_employee_id": "employee ID from travel approval (if exists)",
-                "booking_reference": "booking ID or confirmation number",
-                "issue_type": "name_mismatch|employee_id_mismatch|unauthorized_passenger|missing_approval",
-                "expected_name": "correct name from approval (if applicable)"
-            }}
-        ]
-    }}
-}}
-
-Important:
+Analyze the data and provide your response:
 - Set status to "NON_COMPLIANT" if violations found, "COMPLIANT" if no violations
 - Write violation reasons in clear, user-friendly language
 - Explain exactly what identity issue was found
 - Show what was expected vs what was found
 - Provide specific steps to resolve each issue
 - If compliant, return empty violations array
-- MUST return valid JSON object (not array)
-- ALWAYS include all required fields: rule_name, status, message, details
 """
 
 
 class IdentityAgent:
     def __init__(self, llm):
         self.llm = llm
+        # Create structured output LLM
+        self.structured_llm = llm.with_structured_output(IdentityComplianceResult)
 
     def check_passenger_identity(
         self,
         travel_approval: Dict[str, Any],
         flight_reservations: List[Dict[str, Any]],
     ) -> Dict[str, Any]:
-        """Check passenger name consistency between approval and reservations using LLM"""
+        """Check passenger name consistency between approval and reservations using LLM with structured output"""
 
         system_message = SystemMessage(
-            content="You are a travel compliance expert. Analyze passenger identity data and provide compliance assessments in JSON format."
+            content="You are a travel compliance expert. Analyze passenger identity data and provide compliance assessments using the structured output format."
         )
 
         # Generate prompt using centralized rules
@@ -104,58 +131,22 @@ class IdentityAgent:
 
         human_message = HumanMessage(content=user_prompt)
 
-        # First, try to call the LLM
         try:
-            response = self.llm.invoke([system_message, human_message])
+            # Use structured output - this will automatically return an IdentityComplianceResult object
+            result = self.structured_llm.invoke([system_message, human_message])
+
+            # Convert Pydantic model to dictionary for compatibility with existing code
+            return result.model_dump()
+
         except Exception as e:
+            # Return error in the expected format
             return {
                 "rule_name": "Passenger Identity",
-                "status": "llm_call_error",
-                "message": str(e),
+                "status": "SYSTEM_ERROR",
+                "message": f"System error during identity compliance check: {str(e)}",
                 "details": {
+                    "violations": [],
                     "error_type": "llm_call_error",
                     "error_message": str(e),
-                },
-            }
-
-        # Then, try to parse the response as JSON
-        try:
-            # Handle both string and already parsed content
-            if isinstance(response.content, str):
-                result = json.loads(response.content)
-            else:
-                # If content is already a Python object (list/dict), use it directly
-                result = response.content
-
-            # Ensure result is a dictionary with required status field
-            if not isinstance(result, dict):
-                return {
-                    "rule_name": "Passenger Identity",
-                    "status": "SYSTEM_ERROR",
-                    "message": "LLM returned invalid format (expected dictionary, got {})".format(
-                        type(result).__name__
-                    ),
-                    "details": {
-                        "error_type": "invalid_format",
-                        "raw_response": result,
-                    },
-                }
-
-            # Ensure status field exists
-            if "status" not in result:
-                result["status"] = "SYSTEM_ERROR"
-                result["message"] = "Missing status field in LLM response"
-                result["rule_name"] = "Passenger Identity"
-
-            return result
-        except (json.JSONDecodeError, TypeError) as e:
-            return {
-                "rule_name": "Passenger Identity",
-                "status": "json_parse_error",
-                "message": "Failed to parse LLM response as valid JSON",
-                "details": {
-                    "error_type": "json_parse_error",
-                    "error_message": str(e),
-                    "raw_response": response.content,
                 },
             }
