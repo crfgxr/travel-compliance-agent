@@ -54,10 +54,13 @@ All agents work together through an orchestrator to generate a complete complian
 The application provides an intuitive web interface for compliance auditing:
 
 **Main Interface:**
-![Input Example](images/ui_example.png)
+![Main Example](images/ui_example.png)
 
 **Input Interface:**
 ![Input Example](images/input_example.png)
+
+**Job Interface:**
+![Job Example](images/job_example.png)
 
 **Output Results:**
 ![Output Example](images/output_example.png)
