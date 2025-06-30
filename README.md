@@ -4,9 +4,9 @@ An AI-agent powered automation solution for auditing travel booking compliance
 
 ![Agent Image](images/agent_image.png)
 
-## 🎮 Live Demo
+## 👇 Live Demo
 
-🚀 **Try the application live:** [https://travel-compliance-agent-md6hu9fhrqwuxqf5zzeqge.streamlit.app/](https://travel-compliance-agent-md6hu9fhrqwuxqf5zzeqge.streamlit.app/)
+**Try the application live:** [https://travel-compliance-agent-md6hu9fhrqwuxqf5zzeqge.streamlit.app/](https://travel-compliance-agent-md6hu9fhrqwuxqf5zzeqge.streamlit.app/)
 
 _Experience the full travel compliance auditing system in action with sample data and real-time AI analysis._
 
@@ -46,7 +46,7 @@ The system uses three specialized agents to check different compliance rules:
 
 All agents work together through an orchestrator to generate a complete compliance report.
 
-## 🚀 Tech Stack
+## 🛞 Tech Stack
 
 - **AI Model**: OpenAI reasoning models - Complex compliance rule interpretation
 - **AI Framework**: LangChain - Mature ecosystem for simplified LLM integration and prompt management
