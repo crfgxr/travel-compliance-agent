@@ -4,6 +4,12 @@ An AI-agent powered automation solution for auditing travel booking compliance
 
 ![Agent Image](images/agent_image.png)
 
+## 🎮 Live Demo
+
+🚀 **Try the application live:** [https://travel-compliance-agent-md6hu9fhrqwuxqf5zzeqge.streamlit.app/](https://travel-compliance-agent-md6hu9fhrqwuxqf5zzeqge.streamlit.app/)
+
+_Experience the full travel compliance auditing system in action with sample data and real-time AI analysis._
+
 ## 🎯 Application Overview
 
 This application automatically audits travel bookings against three key compliance rules:
